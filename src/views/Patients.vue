@@ -1,4 +1,6 @@
 <script setup>
+import FormComs from '@/components/componentsPatients/FormComs.vue';
+
 
 
 </script>
@@ -6,7 +8,7 @@
 
 <template>
 
-<p>Patients</p>
+<FormComs/>
 
 </template>
 

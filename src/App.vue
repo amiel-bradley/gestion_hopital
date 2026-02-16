@@ -1,12 +1,14 @@
 <script setup>
-import Header from '@/Layouts/Header.vue';
-import SideBar from '@/Layouts/SideBar.vue';
+// import Header from '@/Layouts/Header.vue';
+// import SideBar from '@/Layouts/SideBar.vue';
+import Patients from './views/Patients.vue';
 
 </script>
 
 
 <template>
-  <header>
+  <Patients/>
+  <!-- <header>
     <Header></Header>
   </header>
   <div>
@@ -16,7 +18,7 @@ import SideBar from '@/Layouts/SideBar.vue';
     <main>
       <RouterView></RouterView>
     </main>
-  </div>
+  </div> -->
 
 </template>
 
