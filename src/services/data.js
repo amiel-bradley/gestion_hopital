@@ -1,4 +1,4 @@
-import { ref } from "vue"
+import { ref, watch } from "vue"
 
 export const users = ref([
     { id: Date.now(), username: 'John', firstname: 'Doe', role: 'admin', password: '1234' },
@@ -7,10 +7,18 @@ export const users = ref([
 ])
 localStorage.setItem('users', JSON.stringify(users.value))
 
-export const doctors = ref([
+
+const storedDoctors = JSON.parse(localStorage.getItem('doctors'))
+export const doctors = ref(storedDoctors || [
     { id: Date.now(), name: 'Rogalex', speciality: 'chirugie', phone: '0166010292', available: true }
 ])
-localStorage.setItem('doctors', JSON.stringify(doctors))
+watch(
+  doctors,
+  (newValue) => {
+    localStorage.setItem('doctors', JSON.stringify(newValue))
+  },
+  { deep: true }
+)
 
 export const patients = ref([
     {
@@ -26,7 +34,7 @@ export const patients = ref([
         createdAt: new Date()
     }
 ])
-localStorage.setItem('patients', JSON.stringify(patients))
+localStorage.setItem('patients', JSON.stringify(patients.value))
 
 export const rooms = ref([
     { numero: "001", capacite: 5, statut: "available", affectationPatient: 0 },
@@ -50,4 +58,4 @@ export const rooms = ref([
     { numero: "019", capacite: 5, statut: "available", affectationPatient: 0 },
     { numero: "020", capacite: 5, statut: "available", affectationPatient: 0 }
 ])
-localStorage.setItem('rooms', JSON.stringify(rooms))
+localStorage.setItem('rooms', JSON.stringify(rooms.value))
