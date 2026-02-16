@@ -1,9 +1,9 @@
 import { ref } from "vue"
 
 export const users = ref([
-    { id: Date.now(), username: 'John', firstname: 'Doe', role: 'admin', password: '1234' },
-    { id: Date.now(), username: 'Rogalex', firstname: 'ZANNOU', role: 'doctor', password: '1234' },
-    { id: Date.now(), username: 'Marcel', firstname: 'YESSIA', role: 'recept', password: '1234' },
+    { id: 1, username: 'John', firstname: 'Doe', role: 'admin', password: '1234' },
+    { id: 2, username: 'Rogalex', firstname: 'ZANNOU', role: 'doctor', password: '1234' },
+    { id: 3, username: 'Marcel', firstname: 'YESSIA', role: 'recept', password: '1234' },
 ])
 localStorage.setItem('users', JSON.stringify(users.value))
 

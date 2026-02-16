@@ -1,25 +1,34 @@
 <script setup>
 import { users } from '@/services/data';
-const currentUser = users.value[0]
+import { auThis, currentId, logout } from '@/services/auth';
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const currentUser = computed(() => {
+  return users.value.find(u => u.id === currentId.value.id) || null;
+})
+function logoutt() {
+    logout()
+    router.push('/')
+}
 </script>
 
-
 <template>
-
-    <!-- <nav>
+    <nav v-if="auThis">
+        <ul>
+            <li>{{ currentUser?.firstname || '' }}</li>
+            <li>{{ currentUser?.username || '' }}</li>
+            <li>{{ currentUser?.role || '' }}</li>
+        </ul>
+        <button @click="logoutt">Déconnexion</button>
+    </nav>
+    <nav v-else>
         <ul>
             <RouterLink to="/">Home</RouterLink>
             <RouterLink to="/login">Se Connecter</RouterLink>
         </ul>
-    </nav> -->
-
-    <nav>
-        <ul>
-            <li>{{ currentUser.firstname }}</li>
-            <li>{{currentUser.role }}</li>
-        </ul>
-        <button>Déconnexion</button>
     </nav>
+
 
 </template>
 

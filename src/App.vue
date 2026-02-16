@@ -1,6 +1,7 @@
 <script setup>
 import Header from '@/Layouts/Header.vue';
 import SideBar from '@/Layouts/SideBar.vue';
+import { auThis } from './services/auth';
 
 </script>
 
@@ -10,7 +11,7 @@ import SideBar from '@/Layouts/SideBar.vue';
     <Header></Header>
   </header>
   <div>
-    <aside>
+    <aside v-if="auThis">
       <SideBar></SideBar>
     </aside>
     <main>
@@ -29,7 +30,6 @@ import SideBar from '@/Layouts/SideBar.vue';
 }
 
 main {
-  background-color: antiquewhite;
   min-width: 90%;
 }
 
