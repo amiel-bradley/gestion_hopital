@@ -4,7 +4,6 @@ import DashboardAdmin from '@/views/DashboardAdmin.vue'
 import DashboardDoctor from '@/views/DashboardDoctor.vue'
 import DashboardRecept from '@/views/DashboardRecept.vue'
 import Doctors from '@/views/Doctors.vue'
-import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import NotFound from '@/views/Not-Found.vue'
 import Patients from '@/views/Patients.vue'
@@ -18,11 +17,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
-  },
-  {
-    path: '/login',
     name: 'login',
     component: Login
   },

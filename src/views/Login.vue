@@ -10,161 +10,286 @@ const username = ref('')
 const mdp = ref('')
 
 function verify() {
-  err.value = ''
+    err.value = ''
+    if (!username.value || !mdp.value) {
+        showError('Veuillez remplir tous les champs');
+        return
+    }
+    const success = login(username.value, mdp.value)
+    if (!success) {
+        showError('Identifiants incorrects')
+        return
+    }
+    const currUser = users.value.find(u => u.username.toLowerCase() === username.value.toLowerCase())
+    if (!currUser) {
+        showError('Utilisateur introuvable')
+        return
+    }
 
-  if (!username.value || !mdp.value) {
-    err.value = 'Veuillez remplir tous les champs';
-    return
-  }
-  const success = login(username.value, mdp.value)
-  if (!success) {
-    showError('Identifiants incorrects')
-    return
-  }
-  const currUser = users.value.find(u => u.username.toLowerCase() === username.value.toLowerCase())
-  localStorage
-  if (!currUser) {
-    showError('Utilisateur introuvable')
-    return
-  }
-
-  const routes = {
-    admin: '/admindash',
-    doctor: '/doctordash',
-    recept: '/receptdash'
-  }
-  router.push(routes[currUser.role] || '/');
+    const routes = {
+        admin: '/admindash',
+        doctor: '/doctordash',
+        recept: '/receptdash'
+    }
+    router.push(routes[currUser.role] || '/');
 }
 
 function showError(message, duration = 3000) {
     err.value = message
-    setTimeout(() => {
-        err.value = ''
-    }, duration)
+    setTimeout(() => { err.value = '' }, duration)
 }
-
 </script>
 
-
 <template>
-    <div class="login-container">
+    <div class="login-wrapper">
+        <div class="bg-decoration">
+            <div class="circle c1"></div>
+            <div class="circle c2"></div>
+        </div>
+
         <form @submit.prevent="verify" class="login-card">
-            <h2>Gestion Employés</h2>
-            <p class="subtitle">Connectez-vous à votre espace</p>
-
-            <div class="input-group">
-                <label>Nom d'utilisateur</label>
-                <input type="text" v-model="username" placeholder="Nom d'utilisateur">
+            <div class="card-header">
+                <div class="brand-badge">+</div>
+                <h1>Hospit<span>Manage</span></h1>
+                <p>Portail Sécurisé du Personnel</p>
             </div>
 
-            <div class="input-group">
-                <label>Mot de passe</label>
-                <input type="password" v-model="mdp" placeholder="••••••••">
+            <div class="form-body">
+                <div class="input-field">
+                    <label>Identifiant</label>
+                    <input type="text" v-model="username" placeholder="Entrez votre ID" autocomplete="username">
+                </div>
+
+                <div class="input-field">
+                    <label>Mot de passe</label>
+                    <input type="password" v-model="mdp" placeholder="••••••••" autocomplete="current-password">
+                </div>
+
+                <Transition name="slide-up">
+                    <div v-if="err" class="error-box">
+                        {{ err }}
+                    </div>
+                </Transition>
+
+                <button type="submit" class="btn-submit">
+                    Se connecter à l'espace santé
+                </button>
             </div>
 
-            <div v-if="err" class="error-message">
-                {{ err }}
+            <div class="card-footer">
+                <p>© 2026 Système de Gestion Hospitalière</p>
+                <div class="footer-links">
+                    <a href="#">Assistance</a>
+                    <span>•</span>
+                    <a href="#">Sécurité</a>
+                </div>
             </div>
-
-            <button type="submit">Se connecter</button>
         </form>
     </div>
 </template>
 
 <style scoped>
-.login-container {
+.login-wrapper {
+    min-height: 100vh;
+    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 70vh;
+    background: radial-gradient(circle at top right, #f0fdfa, #f8fafc);
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.bg-decoration .circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+}
+
+.c1 {
+    width: 400px;
+    height: 400px;
+    background: rgba(13, 148, 136, 0.1);
+    top: -100px;
+    right: -100px;
+}
+
+.c2 {
+    width: 300px;
+    height: 300px;
+    background: rgba(59, 130, 246, 0.05);
+    bottom: -50px;
+    left: -50px;
 }
 
 .login-card {
+    position: relative;
+    z-index: 1;
     background: #ffffff;
-    padding: 2.5rem;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15);
-    border: 1px solid #e0f2fe;
     width: 100%;
-    max-width: 400px;
+    max-width: 440px;
+    padding: 3rem;
+    border-radius: 32px;
+    box-shadow:
+        0 10px 1px rgba(13, 148, 136, 0.02),
+        0 20px 40px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.card-header {
     text-align: center;
+    margin-bottom: 2.5rem;
 }
 
-h2 {
-    color: #0c4a6e;
-    margin-bottom: 0.5rem;
-    font-size: 1.5rem;
+.brand-badge {
+    background: #0d9488;
+    color: white;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 auto 1rem;
 }
 
-.subtitle {
+h1 {
+    font-size: 1.8rem;
+    color: #0f172a;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+h1 span {
+    color: #0d9488;
+}
+
+.card-header p {
     color: #64748b;
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
-.input-group {
-    text-align: left;
-    margin-bottom: 1.5rem;
+.form-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
 }
 
 label {
-    display: block;
+    font-size: 0.8rem;
     font-weight: 700;
-    color: #0369a1;
-    margin-bottom: 0.5rem;
-    font-size: 0.85rem;
+    color: #475569;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-left: 4px;
 }
 
 input {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    border: 2px solid #f1f5f9;
+    border-radius: 16px;
+    background: #f8fafc;
     font-size: 1rem;
+    color: #1e293b;
     transition: all 0.3s ease;
-    box-sizing: border-box;
 }
 
 input:focus {
     outline: none;
-    border-color: #0ea5e9;
-    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+    border-color: #0d9488;
+    background: #ffffff;
+    box-shadow: 0 0 0 5px rgba(13, 148, 136, 0.08);
 }
 
-.error-message {
-    background-color: #fff1f2;
-    color: #be123c;
-    padding: 0.75rem;
-    border-radius: 6px;
-    border-left: 4px solid #be123c;
-    margin-bottom: 1.5rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-align: left;
-}
-
-button {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: #0ea5e9;
+.btn-submit {
+    background: #0d9488;
     color: white;
+    padding: 1.1rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 16px;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
-button:hover {
-    background-color: #0284c7;
+.btn-submit:hover {
+    background: #0f766e;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    box-shadow: 0 10px 20px rgba(13, 148, 136, 0.2);
 }
 
-button:active {
-    transform: translateY(0);
+.error-box {
+    background: #fff1f2;
+    color: #be123c;
+    padding: 0.9rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #fecdd3;
+}
+
+.card-footer {
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.footer-links {
+    margin-top: 0.8rem;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.footer-links a {
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: #0d9488;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+    transition: all 0.4s ease;
+}
+
+.slide-up-enter-from {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.slide-up-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 2rem 1.5rem;
+        border-radius: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 }
 </style>

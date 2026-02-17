@@ -1,7 +1,7 @@
 import { ref } from "vue"
 import { users } from "./data"
 
-export const auThis = ref(false)
+export const auThis = ref(!!localStorage.getItem('userId'));
 export const currentId = ref(
   localStorage.getItem('userId') 
     ? { id: Number(localStorage.getItem('userId'))} 

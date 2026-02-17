@@ -2,40 +2,40 @@
   <div class="home-container">
     <section class="hero">
       <div class="hero-content">
-        <span class="badge">Nouveau : Version 2026 disponible</span>
-        <h1>Gérez vos équipes en un clin d'œil</h1>
+        <span class="badge">Système de Gestion Hospitalière v2.0</span>
+        <h1>L'excellence au service de vos équipes soignantes</h1>
         <p>
-          La plateforme complète pour centraliser vos données employés, 
-          suivre les performances et simplifier vos processus RH.
+          Optimisez la gestion de votre personnel médical, suivez les admissions 
+          et coordonnez les soins en temps réel avec une interface pensée pour les praticiens.
         </p>
         
         <div class="cta-group">
-          <RouterLink to="/login" class="btn-primary">Commencer maintenant</RouterLink>
-          <RouterLink to="/about" class="btn-secondary">En savoir plus</RouterLink>
+          <RouterLink to="/login" class="btn-primary">Accès Portail Santé</RouterLink>
+          <RouterLink to="/about" class="btn-secondary">Découvrir les modules</RouterLink>
         </div>
       </div>
       
       <div class="hero-visual">
         <div class="abstract-shape">
-          <div class="mini-card card-1">👥 1,2k Employés</div>
-          <div class="mini-card card-2">✅ Tâches finies</div>
-          <div class="mini-card card-3">📈 +12% Croissance</div>
+          <div class="mini-card card-1">👨‍⚕️ 12 Médecins</div>
+          <div class="mini-card card-2">🚑 24h/24 Service</div>
+          <div class="mini-card card-3">🏥 98% Lits occupés</div>
         </div>
       </div>
     </section>
 
     <section class="features-preview">
       <div class="feat">
-        <h3>Sécurisé</h3>
-        <p>Données cryptées et accès contrôlés.</p>
+        <h3>Dossier Médical</h3>
+        <p>Centralisation sécurisée des données patients et des historiques de soins.</p>
       </div>
       <div class="feat">
-        <h3>Rapide</h3>
-        <p>Interface optimisée pour la productivité.</p>
+        <h3>Planning Soignants</h3>
+        <p>Gestion intelligente des rotations et des gardes du corps médical.</p>
       </div>
       <div class="feat">
-        <h3>Cloud</h3>
-        <p>Accédez à vos dossiers partout, tout le temps.</p>
+        <h3>Gestion de lits</h3>
+        <p>Visualisation en temps réel de la disponibilité des chambres et services.</p>
       </div>
     </section>
   </div>
@@ -48,7 +48,6 @@
   padding: 4rem 2rem;
 }
 
-/* Hero Section */
 .hero {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
@@ -58,19 +57,20 @@
 }
 
 .badge {
-  background-color: #e0f2fe;
-  color: #0369a1;
+  background-color: #ccfbf1; 
+  color: #0d9488; 
   padding: 6px 16px;
   border-radius: 50px;
   font-size: 0.85rem;
   font-weight: 700;
   display: inline-block;
   margin-bottom: 1.5rem;
+  border: 1px solid #99f6e4;
 }
 
 h1 {
   font-size: 3.5rem;
-  color: #0f172a;
+  color: #1e293b;
   line-height: 1.1;
   margin-bottom: 1.5rem;
   font-weight: 800;
@@ -89,24 +89,24 @@ p {
 }
 
 .btn-primary {
-  background-color: #0ea5e9;
+  background-color: #0d9488; 
   color: white;
   padding: 1rem 2rem;
   border-radius: 12px;
   text-decoration: none;
   font-weight: 700;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.3);
+  box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.3);
 }
 
 .btn-primary:hover {
-  background-color: #0284c7;
+  background-color: #0f766e;
   transform: translateY(-3px);
 }
 
 .btn-secondary {
   background-color: transparent;
-  color: #0f172a;
+  color: #1e293b;
   padding: 1rem 2rem;
   border-radius: 12px;
   text-decoration: none;
@@ -120,11 +120,10 @@ p {
   border-color: #cbd5e1;
 }
 
-/* Visuel Abstrait à droite */
 .hero-visual {
   position: relative;
   height: 300px;
-  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
   border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
 }
 
@@ -133,15 +132,21 @@ p {
   background: white;
   padding: 15px 20px;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
   font-weight: 700;
   font-size: 0.9rem;
-  color: #0c4a6e;
+  color: #0f766e;
+  animation: float 4s ease-in-out infinite;
 }
 
-.card-1 { top: 10%; left: -10%; }
-.card-2 { bottom: 20%; right: -5%; }
-.card-3 { top: 50%; left: 20%; }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.card-1 { top: 10%; left: -10%; animation-delay: 0s; }
+.card-2 { bottom: 20%; right: -5%; animation-delay: 1s; }
+.card-3 { top: 50%; left: 20%; animation-delay: 2s; }
 
 .features-preview {
   display: grid;
@@ -152,16 +157,15 @@ p {
 }
 
 .feat h3 {
-  color: #0ea5e9;
+  color: #0d9488;
   margin-bottom: 0.5rem;
 }
 
 .feat p {
   font-size: 0.95rem;
-  margin: 0;
+  color: #64748b;
 }
 
-/* Responsive */
 @media (max-width: 968px) {
   .hero { grid-template-columns: 1fr; text-align: center; }
   .cta-group { justify-content: center; }
