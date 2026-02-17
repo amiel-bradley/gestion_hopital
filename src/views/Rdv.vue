@@ -33,6 +33,16 @@ const handleSubmit = () => {
     //VERIFIER SI LE DOCTEUR EST DISPONIBLE
     const doctorBusy = rdv.value.find(r => r.doctorId === form.value.doctorId && r.dateTime === form.value.dateTime);
 
+    //VERIFIER SI LE RDV N'EST PAS DANS LE PASSE
+    const latestRdv = rdv.value.reduce((latest, r) => {
+        return new Date(r.dateTime) > new Date(latest.dateTime) ? r : latest;
+    }, { dateTime: '1970-01-01T00:00:00' });
+
+    if (new Date(form.value.dateTime) < new Date(latestRdv.dateTime)) {
+        errorMessage.value = "Vous ne pouvez pas prendre un rendez-vous dans le passé.";
+        return;
+    }
+
     //SI LE PATIENT A DEJA UN RDV A CETTE DATE ET HEURE
     if (patientExists) {
         setInterval(() => {
@@ -46,6 +56,8 @@ const handleSubmit = () => {
         errorMessage.value = "Le docteur n'est pas disponible à cette date et heure.";
         return;
     }
+    
+   
 
     //AJOUTER LE NOUVEAU RDV
     const newRdv = {
@@ -69,13 +81,16 @@ const handleSubmit = () => {
     };
 }
 
-function deleteRdv(id) {
-    // L'utilisateur a confirmé la suppression
+// supprimer le rendez-vous de la liste et du localStorage
+function confimDelet(id) {
+    rdv.value = rdv.value.filter(r => r.id !== id);
+    localStorage.setItem('rdv', JSON.stringify(rdv.value));
+}
+// confirmer la suppression du rendez-vous
+    function deleteRdv(id) {
     if (confirm("Voulez-vous vraiment supprimer ce rendez-vous ?")) {
-        // Supprimer le rendez-vous de la liste
-        rdv.value = rdv.value.filter(r => r.id !== id);
-        localStorage.setItem('rdv', JSON.stringify(rdv.value));
-    }
+        confimDelet(id);
+    } 
     
 }
 // FONCTION POUR EDITER UN RDV
@@ -83,7 +98,7 @@ function editRdv(id) {
     const rdvToEdit = rdv.value.find(r => r.id === id);
     if (rdvToEdit) {
         form.value = { ...rdvToEdit };
-        deleteRdv(id);
+        confimDelet(id);
     }
     
 }
