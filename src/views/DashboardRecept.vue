@@ -4,231 +4,85 @@
 </script>
 
 <template>
-  <div class="page-container">
-    <header class="page-header">
-      <div class="title-zone">
-        <h1>Corps Médical</h1>
-        <p>Gestion des médecins et de leurs spécialités</p>
-      </div>
-      <div class="header-actions">
-        <button class="btn-secondary">Exporter Liste</button>
-        <button class="btn-add">+ Ajouter un Médecin</button>
-      </div>
-    </header>
-
-    <div class="doctors-grid">
+  <nav class="dashboard-menu">
+    <h2> Votre Tableau de Bord</h2>
+    <div class="link-container">
+      <router-link to="/receptmedecins" class="nav-item medical">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        <span>Gérer le corps médical</span>
+      </router-link>
       
-      <div class="doctor-card">
-        <div class="status-indicator online" title="En service"></div>
-        <div class="doctor-header">
-          <div class="doctor-avatar">Dr</div>
-          <div class="doctor-meta">
-            <h3>Dr. Sarah Mansouri</h3>
-            <span class="specialty">Cardiologie</span>
-          </div>
-        </div>
-        
-        <div class="doctor-body">
-          <div class="info-row">
-            <span class="label">Consultations:</span>
-            <span class="value">12 aujourd'hui</span>
-          </div>
-          <div class="info-row">
-            <span class="label">Étage:</span>
-            <span class="value">B - Aile Nord</span>
-          </div>
-        </div>
-
-        <div class="doctor-footer">
-          <button class="btn-profile">Voir Planning</button>
-          <button class="btn-contact">✉️</button>
-        </div>
-      </div>
-
-      <div class="doctor-card">
-        <div class="status-indicator offline" title="Absent"></div>
-        <div class="doctor-header">
-          <div class="doctor-avatar surgeon">Dr</div>
-          <div class="doctor-meta">
-            <h3>Dr. Marc N'diaye</h3>
-            <span class="specialty">Chirurgie Générale</span>
-          </div>
-        </div>
-        
-        <div class="doctor-body">
-          <div class="info-row">
-            <span class="label">Consultations:</span>
-            <span class="value">Aucune</span>
-          </div>
-          <div class="info-row">
-            <span class="label">Étage:</span>
-            <span class="value">Plateau Technique</span>
-          </div>
-        </div>
-
-        <div class="doctor-footer">
-          <button class="btn-profile">Voir Planning</button>
-          <button class="btn-contact">✉️</button>
-        </div>
-      </div>
-
+      <router-link to="/receptpatients" class="nav-item patients">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Gérer les patients</span>
+      </router-link>
+      
+      <router-link to="/rooms" class="nav-item rooms">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+        <span>Gérer les chambres</span>
+      </router-link>
     </div>
-  </div>
+  </nav>
 </template>
 
 <style scoped>
-.page-container {
+.dashboard-menu {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.link-container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 15px;
 }
 
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.page-header h1 {
-  color: #1e293b;
-  font-size: 1.7rem;
-  font-weight: 800;
-}
-
-.doctors-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.doctor-card {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 1.5rem;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.doctor-card:hover {
-  border-color: #0d9488;
-  box-shadow: 0 10px 20px rgba(13, 148, 136, 0.05);
-  transform: translateY(-5px);
-}
-
-.status-indicator {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid white;
-}
-.online { background-color: #10b981; box-shadow: 0 0 8px #10b981; }
-.offline { background-color: #94a3b8; }
-
-.doctor-header {
+.nav-item {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-bottom: 1.5rem;
-}
-
-.doctor-avatar {
-  width: 55px;
-  height: 55px;
-  background: #f0fdf4;
-  color: #166534;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  border: 1px solid #bbf7d0;
-}
-.doctor-avatar.surgeon { background: #fff1f2; color: #9f1239; border-color: #fecdd3; }
-
-.doctor-meta h3 {
-  font-size: 1.1rem;
-  color: #0f172a;
-  margin: 0;
-}
-
-.specialty {
-  font-size: 0.85rem;
-  color: #0d9488;
-  font-weight: 700;
-}
-
-.doctor-body {
-  background: #f8fafc;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  margin-bottom: 5px;
-}
-
-.info-row:last-child { margin-bottom: 0; }
-
-.label { color: #64748b; }
-.value { color: #1e293b; font-weight: 600; }
-
-.doctor-footer {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-add {
-  background: #0d9488;
-  color: white;
-  border: none;
-  padding: 0.7rem 1.2rem;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.btn-secondary {
-  background: white;
-  border: 1px solid #e2e8f0;
-  padding: 0.7rem 1.2rem;
-  border-radius: 10px;
-  color: #64748b;
+  text-decoration: none;
   font-weight: 600;
-  cursor: pointer;
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 2px solid transparent;
 }
 
-.btn-profile {
-  flex: 1;
-  background: #f1f5f9;
-  border: none;
-  padding: 0.6rem;
-  border-radius: 8px;
-  color: #475569;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s;
+/* Style spécifique par section */
+.medical {
+  background-color: #e8f5e9; /* Vert clair */
+  color: #2e7d32;
 }
-.btn-profile:hover { background: #e2e8f0; }
+.medical:hover {
+  background-color: #c8e6c9;
+  border-color: #4caf50;
+}
 
-.btn-contact {
-  background: white;
-  border: 1px solid #e2e8f0;
-  padding: 0.6rem;
-  border-radius: 8px;
-  cursor: pointer;
+.patients {
+  background-color: #fce4ec; /* Rose clair */
+  color: #c2185b;
 }
+.patients:hover {
+  background-color: #f8bbd0;
+  transform: translateX(5px);
+  border-color: #e91e63;
+}
+
+.rooms {
+  background-color: #e3f2fd; /* Bleu clair */
+  color: #1976d2;
+}
+.rooms:hover {
+  background-color: #bbdefb;
+  border-color: #2196f3;
+}
+
 
 </style>

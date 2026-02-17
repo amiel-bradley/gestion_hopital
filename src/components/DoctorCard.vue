@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps({
     doctors: Array,
@@ -7,6 +7,27 @@ const props = defineProps({
 const emit = defineEmits(["removeDoctor", "editDoctor"])
 const showModal = ref(false)
 const doctorToDelete = ref(null)
+const searchQuery = ref("")
+
+const notDoctor = computed(() => {
+  return filteredDoctors.value.length === 0
+})
+
+
+const filteredDoctors = computed(() => {
+  if (!searchQuery.value) {
+    return props.doctors
+  }
+
+  const query = searchQuery.value.toLowerCase().trim()
+
+  return props.doctors.filter(doctor =>
+    doctor.name.toLowerCase().includes(query) ||
+    doctor.speciality.toLowerCase().includes(query) ||
+    doctor.phone.toString().includes(query)
+  )
+})
+
 
 function confirmDelete(doctor){
     doctorToDelete.value = doctor 
@@ -40,6 +61,15 @@ function editDoctor(doctor){
     </h2>
   </div>
 
+  <div class="search-bar">
+  <input 
+    v-model="searchQuery"
+    type="text"
+    placeholder="Rechercher un praticien, spécialité ou contact..."
+  />
+</div>
+
+
   <table class="doctor-table">
     <thead>
       <tr>
@@ -51,7 +81,7 @@ function editDoctor(doctor){
       </tr>
     </thead>
     <tbody>
-      <tr v-for="doctor in doctors" :key="doctor.id">
+      <tr v-for="doctor in filteredDoctors" :key="doctor.id">
         <td class="doctor-name">{{ doctor.name }}</td>
         <td><span class="spec-tag">{{ doctor.speciality }}</span></td>
         <td>{{ doctor.phone }}</td>
@@ -68,7 +98,13 @@ function editDoctor(doctor){
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
           </button>
         </td>
-      </tr>
+    </tr>
+    <tr v-if="notDoctor">
+  <td colspan="5" style="text-align:center; padding: 2rem; color: #64748b;">
+    Aucune correspondance trouvée !
+  </td>
+</tr>
+
     </tbody>
   </table>
 
@@ -89,6 +125,30 @@ function editDoctor(doctor){
 </template>
 
 <style scoped>
+
+/* Search */
+.search-bar {
+  margin-bottom: 1.5rem;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-bar input:focus {
+  border-color: #0d9488;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
 .doctor-container {
   padding: 2rem;
   background: white;

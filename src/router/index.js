@@ -12,6 +12,9 @@ import Rooms from '@/views/Rooms.vue'
 import Users from '@/views/Users.vue'
 import { getUser, isAuthenticated } from '@/services/auth.js'
 import { createRouter, createWebHistory } from 'vue-router'
+import RecepMedecin from '@/components/RecepMedecin.vue'
+import ReceptPatient from '@/components/ReceptPatient.vue'
+import DoctorPatient from '@/components/DoctorPatient.vue'
 
 
 const routes = [
@@ -37,6 +40,21 @@ const routes = [
     name: 'receptdash',
     component: DashboardRecept,
     meta: { requiresAuth: true, requiresRole: 'recept' }
+  },
+  {
+    path: '/receptpatients',
+    name: 'receptpatients',
+    component: ReceptPatient,
+  },
+  {
+    path: '/doctorpatients',
+    name: 'doctorpatients',
+    component: DoctorPatient,
+  },
+  {
+    path: '/receptmedecins',
+    name: 'receptmedecins',
+    component: RecepMedecin,
   },
   {
     path: '/doctors',

@@ -250,7 +250,7 @@ button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(13, 148,
 /* Toasts style */
 .toast {
   position: fixed;
-  top: 20px;
+  top: 100px;
   right: 20px;
   padding: 1rem 1.5rem;
   border-radius: 12px;
@@ -262,8 +262,8 @@ button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(13, 148,
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-.success-add { background: #0d9488; }
-.success-edit { background: #2563eb; }
+.success-add { background: #227e76; }
+.success-edit { background: #f30ab9; }
 
 .toast-icon {
   background: rgba(255,255,255,0.2);
