@@ -101,6 +101,7 @@ function handleSubmit() {
             id: Date.now(),
             dateTime
         })
+        // const patien
         updateRoomCapacity(form.value.room, -1)
         successMessage.value = "Rendez-vous ajouté ✔️";
     }
