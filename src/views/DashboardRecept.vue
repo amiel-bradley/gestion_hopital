@@ -12,7 +12,7 @@
       </div>
       <div class="header-actions">
         <button class="btn-secondary">Exporter Liste</button>
-        <button class="btn-add">+ Ajouter un Médecin</button>
+        <button class="btn-add">+ Ajouter un Patient</button>
       </div>
     </header>
 
