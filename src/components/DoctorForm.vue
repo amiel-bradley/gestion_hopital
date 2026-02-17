@@ -1,6 +1,10 @@
 <script setup>
-import { ref, watch } from 'vue'
+////////Les imports/////////////////////////////////////////////
+import { ref, watch } from 'vue';
+///////////////////////////////////////////////////////////////
 
+
+////////////////Les constantes//////////////////////////////////
 const props = defineProps({
   doctor: Object // null pour ajout, object pour édition
 })
@@ -11,8 +15,14 @@ const speciality = ref('')
 const phone = ref('')
 const available = ref(true)
 const changedbutton = ref(false)
+const succesMAjout = ref(false)
+const succesMModif = ref(false)
+/////////////////////////////////////////////////////////////////////////////////////
 
-// pré-remplir quand doctor change
+
+
+////////////////////Les méthodes///////////////////////////////////////////////////////////
+// remplissage avant que doctor change
 watch(() => props.doctor, (newDoctor) => {
   if(newDoctor){
     name.value = newDoctor.name
@@ -20,7 +30,7 @@ watch(() => props.doctor, (newDoctor) => {
     phone.value = newDoctor.phone
     available.value = newDoctor.available
     changedbutton.value = true;
-  } else {
+} else {
     name.value = ''
     speciality.value = ''
     phone.value = ''
@@ -29,9 +39,9 @@ watch(() => props.doctor, (newDoctor) => {
 }, { immediate: true })
 
 
-
-
+/////////// Fonction qui ajoute ou modifie un docteur********************************
 function submitForm(){
+//////////////*********Modification*************************** */
   if(props.doctor){
     emit('editDoctor', {
       ...props.doctor,
@@ -41,6 +51,14 @@ function submitForm(){
       available: available.value
     })
     changedbutton.value = false
+    succesMModif.value = true
+
+     setTimeout(() => {
+      succesMModif.value = false
+    }, 3000)
+//////////////******************************************************************** */
+
+///////////////************Ajout****************************************** */
   } else {
     emit('addDoctors', {
       id: Date.now(),
@@ -53,7 +71,13 @@ function submitForm(){
     speciality.value = ''
     phone.value = ''
     available.value = true
+    succesMAjout.value = true
+
+     setTimeout(() => {
+      succesMAjout.value = false
+    }, 3000)
   }
+////////////*********************************************************** */
 }
 
 </script>
@@ -61,6 +85,13 @@ function submitForm(){
 
 
 <template>
+    <div class="succesMAjout" v-if="succesMAjout">
+        <p>Docteur ajouté avec succes ✔</p>
+    </div>
+
+    <div class="succesMModif" v-if="succesMModif">
+        <p>Docteur modifié avec succes ✔</p>
+    </div>
   <div class="doctor-form">
     <h2>Ajouter un Docteur</h2>
 
@@ -95,6 +126,61 @@ function submitForm(){
 
 
 <style scoped>
+/* Style commun aux deux messages */
+.succesMAjout,
+.succesMModif {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  min-width: 280px;
+  padding: 15px 20px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.4s ease, fadeOut 0.4s ease 2.6s;
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+}
+
+/* Ajout = bleu */
+.succesMAjout {
+  background: linear-gradient(135deg, #1a73e8, #4dabf7);
+}
+
+/* Modification = rose */
+.succesMModif {
+  background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+}
+
+/* Texte */
+.succesMAjout p,
+.succesMModif p {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* Animation d’entrée */
+@keyframes slideIn {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Animation de disparition */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+}
+
 .doctor-form {
   max-width: 300px;
   margin: 10px auto;
