@@ -1,207 +1,84 @@
 <script setup>
-// Plus tard, tu feras : const listPatients = users.value.filter(u => u.role === 'patient')
+
+
 </script>
 
 <template>
-  <div class="page-container">
-    <header class="page-header">
-      <div class="title-zone">
-        <h1>Registre des Patients</h1>
-        <p>Gérez les admissions et les dossiers médicaux</p>
-      </div>
-      <button class="btn-add">
-        <span class="plus">+</span> Admettre un Patient
-      </button>
-    </header>
-
-    <div class="filters-bar">
-      <input type="text" placeholder="Rechercher un nom ou un ID..." class="search-input" />
-      <select class="filter-select">
-        <option>Tous les services</option>
-        <option>Urgences</option>
-        <option>Cardiologie</option>
-        <option>Pédiatrie</option>
-      </select>
+  <nav class="dashboard-menu">
+    <h2> Votre Tableau de Bord</h2>
+    <div class="link-container">
+      <router-link to='/rdv' class="nav-item medical">
+       
+<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#78A75A"><path d="M291.5-411.5Q280-423 280-440t11.5-28.5Q303-480 320-480t28.5 11.5Q360-457 360-440t-11.5 28.5Q337-400 320-400t-28.5-11.5Zm160 0Q440-423 440-440t11.5-28.5Q463-480 480-480t28.5 11.5Q520-457 520-440t-11.5 28.5Q497-400 480-400t-28.5-11.5Zm160 0Q600-423 600-440t11.5-28.5Q623-480 640-480t28.5 11.5Q680-457 680-440t-11.5 28.5Q657-400 640-400t-28.5-11.5ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/></svg>
+        <span>Mes Rendez-vous</span>
+      </router-link>
+      
+      <router-link to='/patients' class="nav-item patients">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Mes patients</span>
+      </router-link>
     </div>
-
-    <div class="table-card">
-      <table class="hospital-table">
-        <thead>
-          <tr>
-            <th>Patient</th>
-            <th>ID / Matricule</th>
-            <th>Service</th>
-            <th>Statut</th>
-            <th>Médecin Traitant</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div class="patient-info">
-                <div class="avatar">JD</div>
-                <span class="name">Jean Dupont</span>
-              </div>
-            </td>
-            <td><code class="id-badge">#PT-2024-001</code></td>
-            <td>Urgences</td>
-            <td><span class="badge status-urgent">Urgence</span></td>
-            <td>Dr. Martin</td>
-            <td class="actions">
-              <button class="btn-icon edit" title="Modifier">✏️</button>
-              <button class="btn-icon view" title="Voir Dossier">📂</button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              <div class="patient-info">
-                <div class="avatar woman">ML</div>
-                <span class="name">Marie Lawson</span>
-              </div>
-            </td>
-            <td><code class="id-badge">#PT-2024-089</code></td>
-            <td>Pédiatrie</td>
-            <td><span class="badge status-stable">Stable</span></td>
-            <td>Dr. Sow</td>
-            <td class="actions">
-              <button class="btn-icon edit">✏️</button>
-              <button class="btn-icon view">📂</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  </nav>
 </template>
 
 <style scoped>
-.page-container {
+.dashboard-menu {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.link-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 15px;
 }
 
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.page-header h1 {
-  color: #1e293b;
-  font-size: 1.7rem;
-  font-weight: 800;
-}
-
-.page-header p { color: #64748b; }
-
-.btn-add {
-  background-color: #0d9488;
-  color: white;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
+.nav-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: background 0.2s;
-}
-.btn-add:hover { background-color: #0f766e; }
-
-.filters-bar {
-  display: flex;
-  gap: 1rem;
+  gap: 15px;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 2px solid transparent;
 }
 
-.search-input, .filter-select {
-  padding: 0.7rem 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background: white;
-  color: #475569;
+/* Style spécifique par section */
+.medical {
+  background-color: #e8f5e9; /* Vert clair */
+  color: #2e7d32;
 }
-.search-input { flex: 1; }
-
-.table-card {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
+.medical:hover {
+  background-color: #c8e6c9;
+  border-color: #4caf50;
 }
 
-.hospital-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
+.patients {
+  background-color: #fce4ec; /* Rose clair */
+  color: #c2185b;
+}
+.patients:hover {
+  background-color: #f8bbd0;
+  transform: translateX(5px);
+  border-color: #e91e63;
 }
 
-.hospital-table th {
-  background: #f8fafc;
-  padding: 1rem;
-  color: #64748b;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
-  border-bottom: 1px solid #e2e8f0;
+.rooms {
+  background-color: #e3f2fd; /* Bleu clair */
+  color: #1976d2;
+}
+.rooms:hover {
+  background-color: #bbdefb;
+  border-color: #2196f3;
 }
 
-.hospital-table td {
-  padding: 1rem;
-  border-bottom: 1px solid #f1f5f9;
-  color: #1e293b;
-  vertical-align: middle;
-}
-
-.patient-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.avatar {
-  width: 35px;
-  height: 35px;
-  background: #dbeafe;
-  color: #1e40af;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-.avatar.woman { background: #fce7f3; color: #9d174d; }
-
-.id-badge {
-  background: #f1f5f9;
-  padding: 4px 8px;
-  border-radius: 5px;
-  font-family: monospace;
-  color: #475569;
-}
-
-.badge {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-.status-urgent { background: #fee2e2; color: #991b1b; }
-.status-stable { background: #dcfce7; color: #166534; }
-
-.actions { display: flex; gap: 8px; }
-.btn-icon {
-  border: 1px solid #e2e8f0;
-  background: white;
-  padding: 5px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-icon:hover { background: #f8fafc; border-color: #cbd5e1; }
 
 </style>
