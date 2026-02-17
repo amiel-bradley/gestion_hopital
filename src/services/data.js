@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 export const users = ref([
   {
@@ -33,8 +33,37 @@ export const doctors = ref([
     phone: "0166010292",
     available: true,
   },
+  {
+    id: Date.now(),
+    name: "Armiel",
+    speciality: "chirugie",
+    phone: "0166010292",
+    available: true,
+  },
+  {
+    id: Date.now(),
+    name: "Maxson",
+    speciality: "chirugie",
+    phone: "0166010292",
+    available: true,
+  },
+  {
+    id: Date.now(),
+    name: "Marcel",
+    speciality: "chirugie",
+    phone: "0166010292",
+    available: false,
+  },
 ]);
-localStorage.setItem("doctors", JSON.stringify(doctors));
+localStorage.setItem("doctors", JSON.stringify(doctors.value));
+
+export const doctorsdispo = computed(() =>
+  doctors.value.filter((x) => {
+    return x.available == true;
+  }),
+);
+
+console.log(doctorsdispo.value);
 
 export const patients = ref([
   {
@@ -51,7 +80,7 @@ export const patients = ref([
     createdAt: new Date(),
   },
 ]);
-localStorage.setItem("patients", JSON.stringify(patients));
+localStorage.setItem("patients", JSON.stringify(patients.value));
 
 export const rooms = ref([
   {
@@ -191,8 +220,15 @@ export const rooms = ref([
     roomId: Date.now(),
     numero: "020",
     capacite: 5,
-    statut: "available",
+    statut: " Not available",
     affectationPatient: 0,
   },
 ]);
-localStorage.setItem("rooms", JSON.stringify(rooms));
+localStorage.setItem("rooms", JSON.stringify(rooms.value));
+
+export const roomsdispo = computed(() =>
+  rooms.value.filter((x) => {
+    return x.statut == "available";
+  }),
+);
+console.log(roomsdispo.value);

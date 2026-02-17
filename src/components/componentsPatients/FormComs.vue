@@ -1,39 +1,72 @@
 <script setup>
 import { ref } from 'vue'
 
-import { patients } from '@/services/data';
+import { doctorsdispo, roomsdispo } from '@/services/data';
 
-// console.log(patients.value);
 
-const patients=ref( JSON.parse(localStorage.getItem("patients")) || [])
+const patients = ref(JSON.parse(localStorage.getItem("patients")) || [])
 
-const firstName=ref('');
-const lastName=ref('');
-const gender=ref('');
-const phone=ref('');
-const blood=ref('');
-const status=ref('');
-const medicalNeed=ref('');
-const selectedDoctorId=ref('');
-const selectedRoomId=ref('');
+const firstName = ref('');
+const lastName = ref('');
+const gender = ref('');
+const phone = ref('');
+const blood = ref('');
+const status = ref('');
+const medicalNeed = ref('');
+const selectedDoctorId = ref('');
+const selectedRoomId = ref('');
 
-const addPatient=()=>{
 
-    let patient=  {
+
+const addPatient = () => {
+
+  // if (!doctorSelect) {
+  //   console.error("Doctor non trouvé !")
+  //   return
+  // }
+  // if (!roomSelect) {
+  //   console.error("Room non trouvé !")
+  //   return
+  // }
+
+
+  // let doctorSelect = doctorsdispo.value.find((x) => x.name == selectedDoctorId.value)
+
+  // let roomSelect = roomsdispo.value.find((x) => x.numero == selectedRoomId.value)
+  console.log(selectedDoctorId.value);
+  console.log(selectedRoomId.value);
+
+  const doctorSelect = doctorsdispo.value.find(
+    d => d.id === Number(selectedDoctorId.value)
+  )
+
+  const roomSelect = roomsdispo.value.find(
+    r => r.roomId === Number(selectedRoomId.value)
+  )
+  console.log(doctorSelect);
+
+  console.log(roomSelect);
+
+  let patient = {
     id: Date.now(),
-    firstName:firstName.value,
+    firstName: firstName.value,
     lastName: lastName.value,
     gender: gender.value,
     phone: phone.value,
     bloodGroup: blood.value,
     besoinMedical: medicalNeed.value,
-    status: status.status,
-    doctorId: 3,
-    roomId: 12,
+    status: status.value,
+    doctorId: selectedDoctorId.value,
+    roomId: selectedRoomId.value,
     createdAt: new Date(),
   }
 
-    // localStorage.setItem("patients", JSON.stringify(patients.value));
+  patients.value.push(patient)
+
+  console.log(patients.value);
+
+
+  localStorage.setItem("patients", JSON.stringify(patients.value));
 }
 </script>
 
@@ -43,8 +76,14 @@ const addPatient=()=>{
     <input type="text" placeholder="FirstName" v-model="firstName" />
     <label for="LastName">LastName</label>
     <input type="text" placeholder="LastName" v-model="lastName" />
-    <label for="Gender">Gender</label>
-    <input type="text" placeholder="Gender" v-model="gender" />
+    <label for="Genre">Genre</label>
+    <select id="genre" name="genre" required v-model="gender">
+      <option value="">-- Select --</option>
+      <option value="M">M</option>
+      <option value="F">F</option>
+
+    </select>
+
     <label for="Phone">Phone</label>
     <input type="number" placeholder="Phone" v-model="phone" />
 
@@ -86,7 +125,7 @@ const addPatient=()=>{
     <select id="doctorId" name="doctorId" v-model="selectedDoctorId" required>
       <option value="">-- Select --</option>
 
-      <option v-for="doctor in doctorDispo" :key="doctor.id" :value="doctor.id">
+      <option v-for="doctor in doctorsdispo" :key="doctor.id" :value="doctor.id">
         {{ doctor.name }}
       </option>
     </select>
@@ -95,7 +134,7 @@ const addPatient=()=>{
     <select id="roomId" name="roomId" v-model="selectedRoomId" required>
       <option value="">-- Select --</option>
 
-      <option v-for="room in roomsDispo" :key="room.id" :value="room.id">
+      <option v-for="room in roomsdispo" :key="room.roomId" :value="room.roomId">
         {{ room.numero }}
       </option>
     </select>
