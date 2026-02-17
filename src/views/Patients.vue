@@ -1,4 +1,8 @@
 <script setup>
+import AffichagePatientComp from '@/components/componentsPatients/AffichagePatientComp.vue';
+
+
+
 
 
 </script>
@@ -6,7 +10,7 @@
 
 <template>
 
-<p>Patients</p>
+<AffichagePatientComp/>
 
 </template>
 

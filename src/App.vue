@@ -1,10 +1,13 @@
 <script setup>
+// import Header from '@/Layouts/Header.vue';
+// import SideBar from '@/Layouts/SideBar.vue';
+// import FormComs from "./views/FormComs.vue";
 import Header from '@/Layouts/Header.vue';
 import SideBar from '@/Layouts/SideBar.vue';
 import { auThis } from './services/auth';
 
+// import Patients from "./views/Patients.vue";
 </script>
-
 
 <template>
   <div class="app-layout">

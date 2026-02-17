@@ -49,27 +49,34 @@ watch(
 
 // --------- Données Chambres ----------------------------------
 export const rooms = ref([
-    { numero: "001", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "002", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "003", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "004", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "005", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "006", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "007", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "008", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "009", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "010", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "011", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "012", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "013", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "014", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "015", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "016", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "017", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "018", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "019", capacite: 5, statut: "available", affectationPatient: 0 },
-    { numero: "020", capacite: 5, statut: "available", affectationPatient: 0 }
-])
+    { roomId: Date.now(),numero: "001", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "002", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),,numero: "003", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "004", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "005", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "006", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "007", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "008", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "009", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "010", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "011", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "012", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "013", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "014", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "015", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "016", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "017", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "018", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "019", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "020", capacite: 5, statut: "available", affectationPatient: 0 }
+]);
+localStorage.setItem("rooms", JSON.stringify(rooms.value));
+
+export const roomsdispo = computed(() =>
+  rooms.value.filter((x) => {
+    return x.statut == "available";
+  }),
+)
 watch(
     rooms,
     (newValue) => {

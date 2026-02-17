@@ -67,6 +67,11 @@ const routes = [
     component: Patients
   },
   {
+    path: '/patients/formulaire',
+    name: 'formulaire',
+    component: FormComs
+  },
+  {
     path: '/rdv',
     name: 'rdv',
     component: Rdv
