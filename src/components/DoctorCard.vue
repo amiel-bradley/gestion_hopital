@@ -1,274 +1,257 @@
 <script setup>
-///////////////// Les imports//////////////////////////////////
 import { ref } from 'vue';
-//////////////////////////////////////////////////////////////////////////
 
-
-///////////////////// Les constantes ///////////////////////////////////////
 const props = defineProps({
     doctors: Array,
 })
 const emit = defineEmits(["removeDoctor", "editDoctor"])
 const showModal = ref(false)
 const doctorToDelete = ref(null)
-//////////////////////////////////////////////////////////////////////////////////////
 
-
-//////////////////Les méthodes//////////////////////////////////////////////
-
-/// Fonction qui confirme ou non la supression****************************
 function confirmDelete(doctor){
-    doctorToDelete.value = doctor ///// dnne à doctorDelete lesw infos du docteur concerner
+    doctorToDelete.value = doctor 
     showModal.value = true
 }
 
-/// Fonction qui fait la supression**********************************
 function deleteDoctor(){
     if(doctorToDelete.value){
-        emit("removeDoctor", doctorToDelete.value) /// envoie le docteur à supprimer en emit
+        emit("removeDoctor", doctorToDelete.value)
     }
     showModal.value = false
     doctorToDelete.value = null
 }
 
-/// Fonction qui  refuse la supression*************************************
 function cancelDelete(){
     showModal.value = false
     doctorToDelete.value = null
 }
 
-/// Fonction qui modifie un docteur****************************
 function editDoctor(doctor){
     emit("editDoctor", doctor)
 }
-///////////////////////////////////////////////////////////////////////
 </script>
 
 <template>
-
 <div class="doctor-container">
-  <h2>Liste des docteurs 
-<svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="M420-280h120v-140h140v-120H540v-140H420v140H280v120h140v140ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg> </h2>
+  <div class="header-table">
+    <h2>
+      <svg xmlns="http://www.w3.org/2000/svg" class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5v14"/><path d="M7 10h10"/></svg>
+      Personnel Médical
+    </h2>
+  </div>
 
-<!-- Tableau des docteurs -->
   <table class="doctor-table">
     <thead>
       <tr>
-        <th>Nom</th>
+        <th>Nom du Praticien</th>
         <th>Spécialité</th>
-        <th>Téléphone</th>
-        <th>Disponibilité</th>
-        <th>Actions</th>
+        <th>Contact</th>
+        <th>Statut</th>
+        <th class="text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="doctor in doctors" :key="doctor.id">
-        <td>{{ doctor.name }}</td>
-        <td>{{ doctor.speciality }}</td>
+        <td class="doctor-name">{{ doctor.name }}</td>
+        <td><span class="spec-tag">{{ doctor.speciality }}</span></td>
         <td>{{ doctor.phone }}</td>
         <td>
-          <span :class="doctor.available ? 'available' : 'unavailable'">
-            {{ doctor.available ? 'Disponible' : 'Indisponible' }}
+          <span :class="['status-pill', doctor.available ? 'available' : 'unavailable']">
+            {{ doctor.available ? 'En service' : 'Absent' }}
           </span>
         </td>
-        <td>
-          <button class="edit-btn" @click="editDoctor(doctor)">Modifier</button>
-          <button class="remove-btn" @click="confirmDelete(doctor)">Supprimer</button>
+        <td class="actions-cell">
+          <button class="btn-action edit" @click="editDoctor(doctor)" title="Modifier">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+          </button>
+          <button class="btn-action delete" @click="confirmDelete(doctor)" title="Supprimer">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
-  <!-- ********************************************* -->
 
-  <!-- Modal Confirmation -->
-<div v-if="showModal" class="modal-overlay">
-  <div class="modal">
-    <h3>Confirmer la suppression</h3>
-    <p>
-      Voulez-vous vraiment supprimer 
-      <strong>{{ doctorToDelete?.name }}</strong> ?
-    </p>
-    <div class="modal-actions">
-      <button class="cancel-btn" @click="cancelDelete">Annuler</button>
-      <button class="confirm-btn" @click="deleteDoctor">Confirmer</button>
+  <Transition name="fade">
+    <div v-if="showModal" class="modal-overlay" @click.self="cancelDelete">
+      <div class="modal-card">
+        <div class="modal-icon-warn">!</div>
+        <h3>Confirmer la suppression</h3>
+        <p>Voulez-vous vraiment retirer <strong>{{ doctorToDelete?.name }}</strong> de l'annuaire ? Cette action est irréversible.</p>
+        <div class="modal-actions">
+          <button class="btn-cancel" @click="cancelDelete">Annuler</button>
+          <button class="btn-confirm" @click="deleteDoctor">Supprimer le profil</button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-  <!-- ********************************************* -->
-
+  </Transition>
 </div>
 </template>
 
 <style scoped>
-/* Overlay sombre */
+.doctor-container {
+  padding: 2rem;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.header-table {
+  margin-bottom: 2rem;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.title-icon {
+  width: 32px;
+  height: 32px;
+  color: #0d9488;
+}
+
+/* Tableau */
+.doctor-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.doctor-table th {
+  text-align: left;
+  padding: 1rem;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.doctor-table td {
+  padding: 1.2rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+.doctor-name {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.spec-tag {
+  background: #f1f5f9;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+/* Status Pills */
+.status-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.available { background: #dcfce7; color: #166534; }
+.unavailable { background: #fee2e2; color: #991b1b; }
+
+/* Actions */
+.actions-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn-action {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-action svg { width: 18px; height: 18px; }
+
+.edit:hover { border-color: #0d9488; color: #0d9488; background: #f0fdfa; }
+.delete:hover { border-color: #ef4444; color: #ef4444; background: #fef2f2; }
+
+/* Modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 40, 0.5);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000;
+  z-index: 9999;
 }
 
-/* Boîte modale */
-.modal {
+.modal-card {
   background: white;
-  padding: 25px 30px;
-  border-radius: 12px;
-  width: 350px;
+  padding: 2.5rem;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 400px;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  animation: fadeIn 0.3s ease;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
 }
 
-.modal h3 {
-  color: #1a73e8;
-  margin-bottom: 15px;
-}
-
-.modal p {
-  margin-bottom: 20px;
-  font-size: 14px;
+.modal-icon-warn {
+  width: 50px;
+  height: 50px;
+  background: #fee2e2;
+  color: #ef4444;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 auto 1.5rem;
 }
 
 .modal-actions {
   display: flex;
-  justify-content: center;
-  gap: 15px;
+  gap: 12px;
+  margin-top: 2rem;
 }
 
-/* Boutons */
-.cancel-btn {
-  background: #ccc;
-  color: #333;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.cancel-btn:hover {
-  background: #b5b5b5;
-}
-
-.confirm-btn {
-  background: linear-gradient(135deg, #ff4d6d, #ff8fab);
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.confirm-btn:hover {
-  opacity: 0.85;
-}
-
-/* Animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* ===== Container principal ===== */
-.doctor-container {
-  background-color: #f4f8fb; /* bleu très clair médical */
-  padding: 40px;
-  border-radius: 14px;
-  max-width: 1000px;
-  margin: 40px auto;
-}
-
-/* ===== Titre ===== */
-h2 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  color: #0d6efd; /* bleu hospitalier */
-  margin-bottom: 30px;
-  font-weight: 600;
-}
-
-/* ===== Tableau ===== */
-.doctor-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #ffffff;
+.btn-cancel {
+  flex: 1;
+  padding: 0.8rem;
   border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-}
-
-.doctor-table thead {
-  background-color: #e9f2ff; /* bleu doux */
-  color: #0d6efd;
+  border: 1px solid #e2e8f0;
+  background: white;
   font-weight: 600;
+  cursor: pointer;
 }
 
-.doctor-table th,
-.doctor-table td {
-  padding: 16px;
-  text-align: left;
-  font-size: 14px;
-}
-
-.doctor-table tbody tr {
-  border-bottom: 1px solid #eef2f7;
-  transition: background 0.2s ease;
-}
-
-.doctor-table tbody tr:hover {
-  background-color: #f7fbff;
-}
-
-/* ===== Disponibilité ===== */
-.available {
-  color: #198754; /* vert médical */
-  font-weight: 600;
-}
-
-.unavailable {
-  color: #dc3545;
-  font-weight: 600;
-}
-
-/* ===== Boutons Actions ===== */
-.edit-btn {
-  background-color: #0d6efd;
+.btn-confirm {
+  flex: 1;
+  padding: 0.8rem;
+  border-radius: 12px;
+  border: none;
+  background: #ef4444;
   color: white;
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  border: none;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.2s ease;
 }
 
-.edit-btn:hover {
-  background-color: #0b5ed7;
-}
-
-.remove-btn {
-  background-color: #f1f3f5;
-  color: #dc3545;
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.remove-btn:hover {
-  background-color: #f8d7da;
-}
-
+/* Animations */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 </style>
