@@ -1,5 +1,6 @@
-import { ref, watch } from "vue"
+import { computed, ref, watch } from "vue"
 
+// --------- Données Utilisateurs ----------------------------------
 export const users = ref([
     { id: 1, username: 'John', firstname: 'Doe', role: 'admin', password: '1234' },
     { id: 2, username: 'Rogalex', firstname: 'ZANNOU', role: 'doctor', password: '1234' },
@@ -7,20 +8,22 @@ export const users = ref([
 ])
 localStorage.setItem('users', JSON.stringify(users.value))
 
-
+// --------- Données Médecins ----------------------------------
 const storedDoctors = JSON.parse(localStorage.getItem('doctors'))
 export const doctors = ref(storedDoctors || [
     { id: Date.now(), name: 'Rogalex', speciality: 'chirugie', phone: '0166010292', available: true }
 ])
 watch(
-  doctors,
-  (newValue) => {
-    localStorage.setItem('doctors', JSON.stringify(newValue))
-  },
-  { deep: true }
+    doctors,
+    (newValue) => {
+        localStorage.setItem('doctors', JSON.stringify(newValue))
+    },
+    { deep: true }
 )
 
-export const patients = ref([
+// --------- Données Patients ----------------------------------
+const storedPatients = JSON.parse(localStorage.getItem('patients'))
+export const patients = ref(storedPatients || [
     {
         id: Date.now(),
         firstName: "SOUDE",
@@ -29,13 +32,22 @@ export const patients = ref([
         phone: "0158010353",
         bloodGroup: "O+",
         status: "hospitalized",
+        rdv: false,
         doctorId: 3,
         roomId: 12,
         createdAt: new Date()
     }
 ])
-localStorage.setItem('patients', JSON.stringify(patients.value))
+// localStorage.setItem('patients', JSON.stringify(patients.value))
+watch(
+    patients,
+    (newValue) => {
+        localStorage.setItem('patients', JSON.stringify(newValue))
+    },
+    { deep: true }
+)
 
+// --------- Données Chambres ----------------------------------
 export const rooms = ref([
     { numero: "001", capacite: 5, statut: "available", affectationPatient: 0 },
     { numero: "002", capacite: 5, statut: "available", affectationPatient: 0 },
@@ -58,4 +70,20 @@ export const rooms = ref([
     { numero: "019", capacite: 5, statut: "available", affectationPatient: 0 },
     { numero: "020", capacite: 5, statut: "available", affectationPatient: 0 }
 ])
-localStorage.setItem('rooms', JSON.stringify(rooms.value))
+watch(
+    rooms,
+    (newValue) => {
+        localStorage.setItem('rooms', JSON.stringify(newValue))
+    },
+    { deep: true }
+)
+export const roomsAvailable = computed(() => rooms.value.filter(r => r.capacite >= 1))
+watch(
+    roomsAvailable,
+    (newValue) => {
+        localStorage.setItem('roomsAvailable', JSON.stringify(newValue))
+    },
+    { deep: true }
+)
+
+
