@@ -1,27 +1,26 @@
 <script setup>
 // import Header from '@/Layouts/Header.vue';
 // import SideBar from '@/Layouts/SideBar.vue';
-import Patients from './views/Patients.vue';
+// import FormComs from "./views/FormComs.vue";
 
+// import Patients from "./views/Patients.vue";
 </script>
 
-
 <template>
-  <Patients/>
+  <!-- <FormComs /> -->
+  <!-- <Patients /> -->
   <!-- <header>
     <Header></Header>
-  </header>
+  </header> -->
   <div>
-    <aside>
+    <!-- <aside>
       <SideBar></SideBar>
-    </aside>
+    </aside> -->
     <main>
       <RouterView></RouterView>
     </main>
-  </div> -->
-
+  </div>
 </template>
-
 
 <style scoped>
 * {

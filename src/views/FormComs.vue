@@ -1,51 +1,52 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from "vue";
+import { patients } from "@/services/data";
+import { doctorsdispo, roomsdispo } from "@/services/data";
+import { useRouter } from "vue-router";
 
-import { doctorsdispo, roomsdispo } from '@/services/data';
+const router = useRouter();
 
+// const patients = ref(JSON.parse(localStorage.getItem("patients")) || []);
 
-const patients = ref(JSON.parse(localStorage.getItem("patients")) || [])
+const savedTodos = localStorage.getItem("patients") || [];
 
-const firstName = ref('');
-const lastName = ref('');
-const gender = ref('');
-const phone = ref('');
-const blood = ref('');
-const status = ref('');
-const medicalNeed = ref('');
-const selectedDoctorId = ref('');
-const selectedRoomId = ref('');
+if (savedTodos) {
+  patients.value = JSON.parse(savedTodos);
+  console.log((patients.value = JSON.parse(savedTodos)));
+}
 
+watch(
+  patients,
+  (newValue) => {
+    localStorage.setItem("patients", JSON.stringify(newValue));
+  },
+  { deep: true }, // nécessaire si c'est un tableau ou objet
+);
 
+const firstName = ref("");
+const lastName = ref("");
+const gender = ref("");
+const phone = ref("");
+const blood = ref("");
+const status = ref("");
+const medicalNeed = ref("");
+const selectedDoctorId = ref("");
+const selectedRoomId = ref("");
 
 const addPatient = () => {
-
-  // if (!doctorSelect) {
-  //   console.error("Doctor non trouvé !")
-  //   return
-  // }
-  // if (!roomSelect) {
-  //   console.error("Room non trouvé !")
-  //   return
-  // }
-
-
-  // let doctorSelect = doctorsdispo.value.find((x) => x.name == selectedDoctorId.value)
-
-  // let roomSelect = roomsdispo.value.find((x) => x.numero == selectedRoomId.value)
-  console.log(selectedDoctorId.value);
-  console.log(selectedRoomId.value);
+  //   console.log(selectedDoctorId.value);
+  //   console.log(selectedRoomId.value);
 
   const doctorSelect = doctorsdispo.value.find(
-    d => d.id === Number(selectedDoctorId.value)
-  )
+    (d) => d.id === Number(selectedDoctorId.value),
+  );
 
   const roomSelect = roomsdispo.value.find(
-    r => r.roomId === Number(selectedRoomId.value)
-  )
-  console.log(doctorSelect);
+    (r) => r.roomId === Number(selectedRoomId.value),
+  );
+  // console.log(doctorSelect);
 
-  console.log(roomSelect);
+  // console.log(roomSelect);
 
   let patient = {
     id: Date.now(),
@@ -56,18 +57,20 @@ const addPatient = () => {
     bloodGroup: blood.value,
     besoinMedical: medicalNeed.value,
     status: status.value,
+    rdv:false,
     doctorId: selectedDoctorId.value,
     roomId: selectedRoomId.value,
-    createdAt: new Date(),
-  }
+    createdAt: new Date().toLocaleDateString(),
+  };
 
-  patients.value.push(patient)
+  patients.value.push(patient);
 
   console.log(patients.value);
 
-
   localStorage.setItem("patients", JSON.stringify(patients.value));
-}
+
+  router.push("/patients");
+};
 </script>
 
 <template>
@@ -81,7 +84,6 @@ const addPatient = () => {
       <option value="">-- Select --</option>
       <option value="M">M</option>
       <option value="F">F</option>
-
     </select>
 
     <label for="Phone">Phone</label>
@@ -125,7 +127,11 @@ const addPatient = () => {
     <select id="doctorId" name="doctorId" v-model="selectedDoctorId" required>
       <option value="">-- Select --</option>
 
-      <option v-for="doctor in doctorsdispo" :key="doctor.id" :value="doctor.id">
+      <option
+        v-for="doctor in doctorsdispo"
+        :key="doctor.id"
+        :value="doctor.id"
+      >
         {{ doctor.name }}
       </option>
     </select>
@@ -134,7 +140,11 @@ const addPatient = () => {
     <select id="roomId" name="roomId" v-model="selectedRoomId" required>
       <option value="">-- Select --</option>
 
-      <option v-for="room in roomsdispo" :key="room.roomId" :value="room.roomId">
+      <option
+        v-for="room in roomsdispo"
+        :key="room.roomId"
+        :value="room.roomId"
+      >
         {{ room.numero }}
       </option>
     </select>
@@ -151,136 +161,98 @@ const addPatient = () => {
   </form>
 </template>
 
-<!-- <style scoped>
-form {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 40px 30px;
-  background-color: #fff; /* blanc neutre */
-  border-radius: 12px;
-  border: 1px solid #d1d5db;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  font-family: "Arial", sans-serif;
-}
-
-label {
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 6px;
-}
-
-input[type="text"],
-input[type="number"],
-select {
-  padding: 12px 14px;
-  border-radius: 6px;
-  border: 1px solid #9ca3af; /* gris neutre */
-  font-size: 15px;
-  outline: none;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-input:focus,
-select:focus {
-  border-color: #6b7280;
-  box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.2);
-}
-
-select {
-  cursor: pointer;
-}
-
-form button {
-  margin-top: 10px;
-  padding: 14px 0;
-  border-radius: 6px;
-  border: none;
-  background-color: #374151; /* gris foncé */
-  color: #fff;
-  font-weight: 500;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-form button:hover {
-  background-color: #1f2937;
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-  form {
-    padding: 30px 20px;
-  }
-}
-</style> -->
 <style scoped>
+/* ===============================
+   FORM CONTAINER
+================================ */
 form {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 40px 30px;
-  background-color: #f0f9f9;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  font-family: "Segoe UI", sans-serif;
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  font-family: "Inter", "Segoe UI", sans-serif;
 }
 
+/* ===============================
+   LABELS
+================================ */
 label {
-  font-weight: 500;
-  color: #1e3a8a;
+  display: block;
   margin-bottom: 6px;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
 }
 
-input[type="text"],
-input[type="number"],
+/* ===============================
+   INPUTS & SELECTS
+================================ */
+input,
 select {
+  width: 100%;
   padding: 12px 14px;
-  border-radius: 6px;
-  border: 1px solid #cbd5e1;
-  font-size: 15px;
-  outline: none;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  font-size: 14px;
+  color: #0f172a;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
 }
 
-input:focus,
-select:focus {
-  border-color: #059669;
-  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
+input::placeholder {
+  color: #94a3b8;
 }
 
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #5eead4;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+/* ===============================
+   GROUPING FEEL
+================================ */
 select {
   cursor: pointer;
 }
 
-form button {
-  margin-top: 10px;
-  padding: 14px 0;
-  border-radius: 6px;
+/* ===============================
+   SUBMIT BUTTON
+================================ */
+button[type="submit"] {
+  margin-top: 28px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
   border: none;
-  background-color: #1e40af;
-  color: #fff;
-  font-weight: 500;
-  font-size: 16px;
+  background: #0d9488;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
 }
 
-form button:hover {
-  background-color: #1e3a8a;
+button[type="submit"]:hover {
+  background: #0f766e;
+  transform: translateY(-1px);
 }
 
-@media (max-width: 640px) {
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
   form {
-    padding: 30px 20px;
+    padding: 24px;
+    border-radius: 16px;
   }
 }
 </style>

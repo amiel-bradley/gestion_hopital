@@ -63,23 +63,25 @@ export const doctorsdispo = computed(() =>
   }),
 );
 
-console.log(doctorsdispo.value);
-
 export const patients = ref([
   {
     id: Date.now(),
     firstName: "SOUDE",
     lastName: "Armel",
-    gender: "male",
+    gender: "Male",
     phone: "0158010353",
     bloodGroup: "O+",
     besoinMedical: "chirurgie",
     status: "hospitalized",
+    rdv:false,
     doctorId: 3,
     roomId: 12,
-    createdAt: new Date(),
+    createdAt: new Date().toLocaleDateString(),
   },
 ]);
+
+console.log(patients.value);
+
 localStorage.setItem("patients", JSON.stringify(patients.value));
 
 export const rooms = ref([
@@ -231,4 +233,3 @@ export const roomsdispo = computed(() =>
     return x.statut == "available";
   }),
 );
-console.log(roomsdispo.value);

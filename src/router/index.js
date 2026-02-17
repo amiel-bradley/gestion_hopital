@@ -4,6 +4,7 @@ import DashboardAdmin from '@/views/DashboardAdmin.vue'
 import DashboardDoctor from '@/views/DashboardDoctor.vue'
 import DashboardRecept from '@/views/DashboardRecept.vue'
 import Doctors from '@/views/Doctors.vue'
+import FormComs from '@/views/FormComs.vue'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import NotFound from '@/views/Not-Found.vue'
@@ -52,6 +53,11 @@ const routes = [
     path: '/patients',
     name: 'patients',
     component: Patients
+  },
+  {
+    path: '/patients/formulaire',
+    name: 'formulaire',
+    component: FormComs
   },
   {
     path: '/rdv',

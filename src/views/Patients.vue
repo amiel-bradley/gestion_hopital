@@ -1,5 +1,7 @@
 <script setup>
-import FormComs from '@/components/componentsPatients/FormComs.vue';
+import AffichagePatientComp from '@/components/componentsPatients/AffichagePatientComp.vue';
+
+
 
 
 
@@ -8,7 +10,7 @@ import FormComs from '@/components/componentsPatients/FormComs.vue';
 
 <template>
 
-<FormComs/>
+<AffichagePatientComp/>
 
 </template>
 
