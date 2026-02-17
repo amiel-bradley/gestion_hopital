@@ -11,6 +11,7 @@ import Patients from '@/views/Patients.vue'
 import Rdv from '@/views/Rdv.vue'
 import Rooms from '@/views/Rooms.vue'
 import Users from '@/views/Users.vue'
+import { getUser, isAuthenticated } from '@/services/auth.js'
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -89,7 +90,27 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-// })
+router.beforeEach((to, from, next) => {
+  const authRequired = to.meta.requiresAuth;
+  const requiredRole = to.meta.requiresRole;
+  const user = getUser()
 
+  if (authRequired && !isAuthenticated()) {
+    return next({ name: 'login' });
+  }
+
+  if (requiredRole && user?.role !== requiredRole) {
+    if (user?.role === 'admin') return next({ name: 'admindash' });
+    if (user?.role === 'doctor') return next({ name: 'doctordash' });
+    if (user?.role === 'recept') return next({ name: 'receptdash' });
+    return next({ name: 'home' });
+  }
+
+  if (to.name === 'login' && isAuthenticated()) {
+    if (user?.role === 'admin') return next({ name: 'admindash' });
+    if (user?.role === 'doctor') return next({ name: 'doctordash' });
+    if (user?.role === 'recept') return next({ name: 'receptdash' });
+  }
+  next();
+});
 export default router
