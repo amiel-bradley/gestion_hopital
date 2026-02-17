@@ -10,7 +10,7 @@ localStorage.setItem('users', JSON.stringify(users.value))
 export const doctors = ref([
     { id: Date.now(), name: 'Rogalex', speciality: 'chirugie', phone: '0166010292', available: true }
 ])
-localStorage.setItem('doctors', JSON.stringify(doctors))
+localStorage.setItem('doctors', JSON.stringify(doctors.value))
 
 export const patients = ref([
     {
@@ -26,7 +26,7 @@ export const patients = ref([
         createdAt: new Date()
     }
 ])
-localStorage.setItem('patients', JSON.stringify(patients))
+localStorage.setItem('patients', JSON.stringify(patients.value))
 
 export const rooms = ref([
     { numero: "001", capacite: 5, statut: "available", affectationPatient: 0 },
