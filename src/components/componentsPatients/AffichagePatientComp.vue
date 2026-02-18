@@ -8,7 +8,9 @@ const router = useRouter();
 
 const patientToEdit = JSON.parse(localStorage.getItem("patientToEdit"))
 const modifier = (patient) => {
+
   localStorage.setItem("patientToEdit", JSON.stringify(patient));
+  
   router.push("/patients/formulaire");
 }
 
