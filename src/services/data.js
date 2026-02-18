@@ -51,7 +51,7 @@ watch(
 export const rooms = ref([
     { roomId: Date.now(),numero: "001", capacite: 5, statut: "available", affectationPatient: 0 },
     { roomId: Date.now(),numero: "002", capacite: 5, statut: "available", affectationPatient: 0 },
-    { roomId: Date.now(),,numero: "003", capacite: 5, statut: "available", affectationPatient: 0 },
+    { roomId: Date.now(),numero: "003", capacite: 5, statut: "available", affectationPatient: 0 },
     { roomId: Date.now(),numero: "004", capacite: 5, statut: "available", affectationPatient: 0 },
     { roomId: Date.now(),numero: "005", capacite: 5, statut: "available", affectationPatient: 0 },
     { roomId: Date.now(),numero: "006", capacite: 5, statut: "available", affectationPatient: 0 },

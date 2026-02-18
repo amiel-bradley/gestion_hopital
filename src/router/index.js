@@ -15,6 +15,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import RecepMedecin from '@/components/RecepMedecin.vue'
 import ReceptPatient from '@/components/ReceptPatient.vue'
 import DoctorPatient from '@/components/DoctorPatient.vue'
+import FormComs from '@/views/FormComs.vue'
+import Détails from '@/components/Détails.vue'
+import Affectation from '@/components/Affectation.vue'
 
 
 const routes = [
@@ -72,6 +75,12 @@ const routes = [
     component: FormComs
   },
   {
+    path: '/patients/details/:id',
+    name: 'patient-details',
+    component: Détails,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/rdv',
     name: 'rdv',
     component: Rdv
@@ -80,6 +89,11 @@ const routes = [
     path: '/rooms',
     name: 'rooms',
     component: Rooms
+  },
+  {
+    path: '/rooms/affectation',
+    name: 'affectation',
+    component: Affectation
   },
   {
     path: '/users',
@@ -120,7 +134,7 @@ router.beforeEach((to, from, next) => {
     if (user?.role === 'admin') return next({ name: 'admindash' });
     if (user?.role === 'doctor') return next({ name: 'doctordash' });
     if (user?.role === 'recept') return next({ name: 'receptdash' });
-    return next({ name: 'home' });
+    return next({ name: 'login' });
   }
 
   if (to.name === 'login' && isAuthenticated()) {

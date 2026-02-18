@@ -1,7 +1,16 @@
 <script setup>
+import { computed } from "vue";
 import { patients } from "@/services/data";
-// console.log(patients.value);
+import { RouterLink, useRouter } from "vue-router";
 import { ref } from "vue";
+
+const router = useRouter();
+
+const patientToEdit = JSON.parse(localStorage.getItem("patientToEdit"))
+const modifier = (patient) => {
+  localStorage.setItem("patientToEdit", JSON.stringify(patient));
+  router.push("/patients/formulaire");
+}
 
 const search = ref("");
 
@@ -9,24 +18,30 @@ const selectedStatus = ref("");
 
 const savedTodos = localStorage.getItem("patients") || [];
 
-console.log(savedTodos);
-
 patients.value = JSON.parse(savedTodos);
 
 console.log(patients.value);
 
-// // console.log(savedTodos);
 
-// if (savedTodos) {
-// }
+const filteredPatients = computed(() => {
+  return patients.value.filter(p => {
+    const matchSearch =
+      `${p.firstName} ${p.lastName}`
+        .toLowerCase()
+        .includes(search.value.toLowerCase());
 
-// watch(
-//   patients,
-//   (newValue) => {
-//     localStorage.setItem("patients", JSON.stringify(newValue));
-//   },
-//   { deep: true },
-// );
+    const matchStatus =
+      !selectedStatus.value ||
+      p.status === selectedStatus.value;
+
+    return matchSearch && matchStatus;
+  })
+})
+
+const ajouterPatient = () => {
+  localStorage.removeItem("patientToEdit")
+  router.push("/patients/formulaire")
+};
 
 const supp = (a) => {
   patients.value = patients.value.filter((p) => p.id !== a);
@@ -39,24 +54,18 @@ const supp = (a) => {
     <header class="patients-header">
       <h2>Gestion des patients</h2>
 
-      <router-link to="/patients/formulaire" class="btn-add">
+      <button class="btn-add" @click="ajouterPatient">
         + Ajouter un patient
-      </router-link>
+      </button>
     </header>
 
     <!-- Filtres -->
     <div class="patients-filters">
-      <input
-        type="text"
-        v-model="search"
-        placeholder="Rechercher par nom ou médecin"
-      />
+      <input type="text" v-model="search" placeholder="Rechercher par nom ou médecin" />
 
       <select v-model="selectedStatus">
-        <option value="">-- Tous les statuts --</option>
-        <option value="en_attente">En attente</option>
+        <option value="">Tous les statuts</option>
         <option value="en_consultation">En consultation</option>
-        <option value="en_traitement">En traitement</option>
         <option value="hospitalise">Hospitalisé</option>
         <option value="sorti">Sorti</option>
         <option value="transfere">Transféré</option>
@@ -65,11 +74,7 @@ const supp = (a) => {
 
     <!-- Liste des patients -->
     <div class="patients-list">
-      <article
-        class="patient-card"
-        v-for="patient in patients"
-        :key="patient.id"
-      >
+      <article class="patient-card" v-for="patient in filteredPatients" :key="patient.id">
         <div class="patient-main">
           <h3>{{ patient.firstName }} {{ patient.lastName }}</h3>
           <span class="patient-status">
@@ -85,8 +90,10 @@ const supp = (a) => {
         </div>
 
         <div class="patient-actions">
-          <button class="btn secondary" @click="detail">Voir détail</button>
-          <button class="btn primary" @click="modifier">Modifier</button>
+          <router-link class="btn secondary" :to="`/patients/details/${patient.id}`">
+            Voir détail
+          </router-link>
+          <button class="btn primary" @click="modifier(patient)">Modifier</button>
           <button class="btn danger" @click="supp(patient.id)">
             Supprimer
           </button>

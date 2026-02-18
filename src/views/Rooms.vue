@@ -11,9 +11,12 @@ import { rooms } from '@/services/data';
       </div>
       <div class="stats-mini">
         <div class="stat-item">
-          <span class="dot green"></span> 
-          <strong>{{ rooms.filter(r => r.statut === 'Disponible').length }}</strong> Libres
+          <span class="dot green"></span>
+          <strong>{{rooms.filter(r => r.statut === 'Disponible').length}}</strong> Libres
         </div>
+      </div>
+      <div class="card-footer">
+        <RouterLink class="btn-manage" to="/rooms/affectation">Gérer l'affectation</RouterLink>
       </div>
     </header>
 
@@ -35,10 +38,6 @@ import { rooms } from '@/services/data';
             <span class="label">Patients :</span>
             <span class="value">{{ room.affectationPatient || 'Aucun' }}</span>
           </div>
-        </div>
-
-        <div class="card-footer">
-          <button class="btn-manage">Gérer l'affectation</button>
         </div>
       </div>
     </div>
@@ -64,7 +63,9 @@ import { rooms } from '@/services/data';
   font-weight: 800;
 }
 
-.title-zone p { color: #64748b; }
+.title-zone p {
+  color: #64748b;
+}
 
 .stats-mini {
   background: white;
@@ -81,7 +82,10 @@ import { rooms } from '@/services/data';
   border-radius: 50%;
   margin-right: 5px;
 }
-.dot.green { background: #10b981; }
+
+.dot.green {
+  background: #10b981;
+}
 
 /* Grille des chambres */
 .rooms-grid {
@@ -97,13 +101,22 @@ import { rooms } from '@/services/data';
   border-radius: 16px;
   padding: 1.2rem;
   transition: all 0.3s ease;
-  border-left: 5px solid #cbd5e1; /* Par défaut gris */
+  border-left: 5px solid #cbd5e1;
+  /* Par défaut gris */
 }
 
 /* Changement de couleur selon le statut */
-.room-card.disponible { border-left-color: #10b981; }
-.room-card.occupée { border-left-color: #3b82f6; }
-.room-card.maintenance { border-left-color: #f59e0b; }
+.room-card.disponible {
+  border-left-color: #10b981;
+}
+
+.room-card.occupée {
+  border-left-color: #3b82f6;
+}
+
+.room-card.maintenance {
+  border-left-color: #f59e0b;
+}
 
 .card-header {
   display: flex;
@@ -127,9 +140,20 @@ import { rooms } from '@/services/data';
   text-transform: uppercase;
 }
 
-.status-badge.disponible { background: #dcfce7; color: #166534; }
-.status-badge.occupée { background: #dbeafe; color: #1e40af; }
-.status-badge.maintenance { background: #fef3c7; color: #92400e; }
+.status-badge.disponible {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.occupée {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-badge.maintenance {
+  background: #fef3c7;
+  color: #92400e;
+}
 
 .card-body {
   margin-bottom: 1.5rem;
@@ -144,8 +168,14 @@ import { rooms } from '@/services/data';
   font-size: 0.9rem;
 }
 
-.label { color: #64748b; }
-.value { color: #1e293b; font-weight: 600; }
+.label {
+  color: #64748b;
+}
+
+.value {
+  color: #1e293b;
+  font-weight: 600;
+}
 
 .btn-manage {
   width: 100%;
@@ -166,6 +196,8 @@ import { rooms } from '@/services/data';
 }
 
 @media (max-width: 600px) {
-  .rooms-grid { grid-template-columns: 1fr; }
+  .rooms-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
