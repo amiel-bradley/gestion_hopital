@@ -1,15 +1,18 @@
 <script setup>
-import Header from '@/Layouts/Header.vue';
+// import Header from '@/Layouts/Header.vue';
+// import SideBar from '@/Layouts/SideBar.vue';
+// import FormComs from "./views/FormComs.vue";
 import SideBar from '@/Layouts/SideBar.vue';
 import { auThis } from './services/auth';
+import Header from '@/Layouts/Header.vue';
 
+// import Patients from "./views/Patients.vue";
 </script>
-
 
 <template>
   <div class="app-layout">
     <header class="main-header" v-if="auThis">
-      <Header />
+      <Header/>
     </header>
 
     <div class="content-wrapper">
