@@ -4,24 +4,25 @@ import DashboardAdmin from '@/views/DashboardAdmin.vue'
 import DashboardDoctor from '@/views/DashboardDoctor.vue'
 import DashboardRecept from '@/views/DashboardRecept.vue'
 import Doctors from '@/views/Doctors.vue'
-import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import NotFound from '@/views/Not-Found.vue'
 import Patients from '@/views/Patients.vue'
 import Rdv from '@/views/Rdv.vue'
 import Rooms from '@/views/Rooms.vue'
 import Users from '@/views/Users.vue'
+import { getUser, isAuthenticated } from '@/services/auth.js'
 import { createRouter, createWebHistory } from 'vue-router'
+import RecepMedecin from '@/components/RecepMedecin.vue'
+import ReceptPatient from '@/components/ReceptPatient.vue'
+import DoctorPatient from '@/components/DoctorPatient.vue'
+import FormComs from '@/views/FormComs.vue'
+import Détails from '@/components/Détails.vue'
+import Affectation from '@/components/Affectation.vue'
 
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
-  },
-  {
-    path: '/login',
     name: 'login',
     component: Login
   },
@@ -44,6 +45,21 @@ const routes = [
     meta: { requiresAuth: true, requiresRole: 'recept' }
   },
   {
+    path: '/receptpatients',
+    name: 'receptpatients',
+    component: ReceptPatient,
+  },
+  {
+    path: '/doctorpatients',
+    name: 'doctorpatients',
+    component: DoctorPatient,
+  },
+  {
+    path: '/receptmedecins',
+    name: 'receptmedecins',
+    component: RecepMedecin,
+  },
+  {
     path: '/doctors',
     name: 'doctors',
     component: Doctors
@@ -54,6 +70,17 @@ const routes = [
     component: Patients
   },
   {
+    path: '/patients/formulaire',
+    name: 'formulaire',
+    component: FormComs
+  },
+  {
+    path: '/patients/details/:id',
+    name: 'patient-details',
+    component: Détails,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/rdv',
     name: 'rdv',
     component: Rdv
@@ -62,6 +89,11 @@ const routes = [
     path: '/rooms',
     name: 'rooms',
     component: Rooms
+  },
+  {
+    path: '/rooms/affectation',
+    name: 'affectation',
+    component: Affectation
   },
   {
     path: '/users',
@@ -89,7 +121,27 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-// })
+router.beforeEach((to, from, next) => {
+  const authRequired = to.meta.requiresAuth;
+  const requiredRole = to.meta.requiresRole;
+  const user = getUser()
 
+  if (authRequired && !isAuthenticated()) {
+    return next({ name: 'login' });
+  }
+
+  if (requiredRole && user?.role !== requiredRole) {
+    if (user?.role === 'admin') return next({ name: 'admindash' });
+    if (user?.role === 'doctor') return next({ name: 'doctordash' });
+    if (user?.role === 'recept') return next({ name: 'receptdash' });
+    return next({ name: 'login' });
+  }
+
+  if (to.name === 'login' && isAuthenticated()) {
+    if (user?.role === 'admin') return next({ name: 'admindash' });
+    if (user?.role === 'doctor') return next({ name: 'doctordash' });
+    if (user?.role === 'recept') return next({ name: 'receptdash' });
+  }
+  next();
+});
 export default router
