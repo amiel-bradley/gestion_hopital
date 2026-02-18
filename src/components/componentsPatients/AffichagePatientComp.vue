@@ -49,21 +49,34 @@ const supp = (a) => {
 </script>
 
 <template>
-  <section class="patients-page">
-    <!-- Header -->
-    <header class="patients-header">
-      <h2>Gestion des patients</h2>
+  <section class="p-8 bg-[#F8FAFC] min-h-screen">
+    <header class="flex justify-between items-center mb-10">
+      <h2 class="text-2xl font-bold text-[#1e293b] flex items-center gap-2">
+        Gestion des patients
+      </h2>
 
-      <button class="btn-add" @click="ajouterPatient">
-        + Ajouter un patient
+      <button 
+        @click="ajouterPatient"
+        class="bg-[#10b981] hover:bg-[#059669] text-white px-6 py-2.5 rounded-lg font-semibold flex items-center gap-2 transition-all shadow-sm active:scale-95"
+      >
+        <span class="text-xl">+</span> Ajouter un patient
       </button>
     </header>
 
-    <!-- Filtres -->
-    <div class="patients-filters">
-      <input type="text" v-model="search" placeholder="Rechercher par nom ou médecin" />
+    <div class="flex flex-wrap gap-4 mb-8">
+      <div class="relative flex-1 max-w-sm">
+        <input 
+          type="text" 
+          v-model="search" 
+          placeholder="Rechercher par nom ou médecin" 
+          class="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#10b981] focus:border-transparent outline-none transition-all bg-white"
+        />
+      </div>
 
-      <select v-model="selectedStatus">
+      <select 
+        v-model="selectedStatus"
+        class="px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#10b981] outline-none bg-white min-w-[200px] text-gray-600 cursor-pointer"
+      >
         <option value="">Tous les statuts</option>
         <option value="en_consultation">En consultation</option>
         <option value="hospitalise">Hospitalisé</option>
@@ -72,29 +85,59 @@ const supp = (a) => {
       </select>
     </div>
 
-    <!-- Liste des patients -->
-    <div class="patients-list">
-      <article class="patient-card" v-for="patient in filteredPatients" :key="patient.id">
-        <div class="patient-main">
-          <h3>{{ patient.firstName }} {{ patient.lastName }}</h3>
-          <span class="patient-status">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <article 
+        v-for="patient in filteredPatients" 
+        :key="patient.id"
+        class="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow"
+      >
+        <div class="flex justify-between items-start mb-6">
+          <h3 class="text-lg font-bold text-gray-800 uppercase tracking-tight">
+            {{ patient.firstName }} {{ patient.lastName }}
+          </h3>
+          <span class="px-3 py-1 rounded-full text-xs font-medium bg-[#ebf5ff] text-[#3182ce] capitalize">
             {{ patient.status.replace("_", " ") }}
           </span>
         </div>
 
-        <div class="patient-info">
-          <p><strong>ID :</strong> {{ patient.id }}</p>
-          <p><strong>Genre :</strong> {{ patient.gender }}</p>
-          <p><strong>Téléphone :</strong> {{ patient.phone }}</p>
-          <p><strong>Groupe sanguin :</strong> {{ patient.bloodGroup }}</p>
+        <div class="bg-[#f8fafc] rounded-2xl p-4 grid grid-cols-2 gap-y-3 gap-x-2 mb-6">
+          <div class="text-sm">
+            <span class="text-gray-400 block text-xs uppercase font-semibold">ID</span>
+            <span class="text-gray-700 font-medium">{{ patient.id }}</span>
+          </div>
+          <div class="text-sm">
+            <span class="text-gray-400 block text-xs uppercase font-semibold">Genre</span>
+            <span class="text-gray-700 font-medium">{{ patient.gender }}</span>
+          </div>
+          <div class="text-sm">
+            <span class="text-gray-400 block text-xs uppercase font-semibold">Téléphone</span>
+            <span class="text-gray-700 font-medium">{{ patient.phone }}</span>
+          </div>
+          <div class="text-sm">
+            <span class="text-gray-400 block text-xs uppercase font-semibold">Groupe sanguin</span>
+            <span class="text-gray-700 font-medium text-[#e53e3e]">{{ patient.bloodGroup }}</span>
+          </div>
         </div>
 
-        <div class="patient-actions">
-          <router-link class="btn secondary" :to="`/patients/details/${patient.id}`">
+        <div class="grid grid-cols-3 gap-2">
+          <router-link 
+            :to="`/patients/details/${patient.id}`"
+            class="text-center py-2.5 rounded-xl text-sm font-semibold border border-gray-100 text-gray-600 hover:bg-gray-50 transition"
+          >
             Voir détail
           </router-link>
-          <button class="btn primary" @click="modifier(patient)">Modifier</button>
-          <button class="btn danger" @click="supp(patient.id)">
+          
+          <button 
+            @click="modifier(patient)"
+            class="py-2.5 rounded-xl text-sm font-semibold border border-[#b2f5ea] text-[#2c7a7b] bg-[#e6fffa] hover:bg-[#b2f5ea] transition"
+          >
+            Modifier
+          </button>
+
+          <button 
+            @click="supp(patient.id)"
+            class="py-2.5 rounded-xl text-sm font-semibold border border-[#fed7d7] text-[#c53030] bg-[#fff5f5] hover:bg-[#fed7d7] transition"
+          >
             Supprimer
           </button>
         </div>
@@ -103,6 +146,22 @@ const supp = (a) => {
   </section>
 </template>
 
+<style scoped>
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .patients-filters {
+    flex-direction: column;
+  }
+
+  .patient-info {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 <!-- <style scoped>
 /* Page globale */
 .patients-page {
@@ -251,7 +310,7 @@ const supp = (a) => {
 }
 </style> -->
 
-<style scoped>
+<!-- <style scoped>
 /* ===============================
    PAGE
 ================================ */
@@ -429,16 +488,5 @@ const supp = (a) => {
   filter: brightness(0.97);
 }
 
-/* ===============================
-   RESPONSIVE
-================================ */
-@media (max-width: 768px) {
-  .patients-filters {
-    flex-direction: column;
-  }
+</style> -->
 
-  .patient-info {
-    grid-template-columns: 1fr;
-  }
-}
-</style>

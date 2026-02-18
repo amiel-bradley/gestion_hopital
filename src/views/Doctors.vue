@@ -35,43 +35,93 @@ function saveEditDoctor(doctor){
 </script>
 
 <template>
-  <div class="page-layout">
-    <header class="page-header">
-      <div class="header-info">
-        <h1>Annuaire Médical</h1>
-        <p>Gérez les effectifs et les disponibilités des praticiens de l'établissement.</p>
+  <div class="min-h-screen bg-[#F8FAFC] p-4 md:p-6 lg:p-10 font-sans text-slate-900">
+    
+    <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+      <div class="space-y-1">
+        <h1 class="text-2xl md:text-3xl font-black text-[#1E293B]">
+          Annuaire <span class="text-[#10b981]">Médical</span>
+        </h1>
+        <p class="text-sm md:text-base text-slate-500">Gérez les effectifs et les disponibilités des praticiens.</p>
       </div>
-      <div class="badge-total">
-        <span>Total : <b>{{ doctors.length }}</b> médecins</span>
+      
+      <div class="bg-white px-4 py-2 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-3 self-end sm:self-auto">
+        <span class="flex h-2 w-2 rounded-full bg-emerald-500"></span>
+        <span class="text-sm font-bold text-slate-600">
+          Total : <span class="text-emerald-600">{{ doctors.length }}</span> médecins
+        </span>
       </div>
     </header>
 
-    <div class="main-content">
-      <aside class="form-sidebar">
-        <div class="sticky-container">
+    <div class="flex flex-col lg:flex-row gap-8 items-start">
+      
+      <aside class="w-full lg:w-[380px] shrink-0">
+        <div class="bg-white rounded-[2rem] p-6 shadow-xl shadow-slate-200/60 border border-white">
+          <div class="mb-6 flex items-center gap-3 px-2">
+            <div class="p-2 bg-emerald-50 rounded-lg">
+              <UserPlus class="w-5 h-5 text-emerald-600" />
+            </div>
+            <h2 class="font-bold text-slate-800">{{ selectDoctor ? 'Modifier le profil' : 'Nouveau Docteur' }}</h2>
+          </div>
+
           <DoctorForm 
             @addDoctors="addDoctors" 
             :doctor="selectDoctor" 
             @editDoctor="saveEditDoctor" 
           />
-          <button v-if="selectDoctor" class="btn-cancel-edit" @click="selectDoctor = null">
+
+          <button 
+            v-if="selectDoctor" 
+            @click="selectDoctor = null"
+            class="w-full mt-4 py-3 rounded-xl bg-slate-50 text-slate-500 text-sm font-bold border-2 border-dashed border-slate-200 hover:border-red-200 hover:text-red-500 transition-all uppercase tracking-widest"
+          >
             Annuler la modification
           </button>
         </div>
       </aside>
 
-      <section class="list-section">
-        <DoctorCard 
-          :doctors="doctors" 
-          @removeDoctor="removeDoctor" 
-          @editDoctor="editDoctor" 
-        />
+      <section class="w-full flex-1">
+        <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
+          <div class="p-6 border-b border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-emerald-50 rounded-lg">
+                <Users class="w-5 h-5 text-emerald-600" />
+              </div>
+              <h2 class="font-bold text-slate-800 text-lg">Personnel Médical</h2>
+            </div>
+            
+            <div class="relative w-full md:w-64">
+              <input type="text" placeholder="Rechercher..." class="w-full bg-slate-50 border-none rounded-xl py-2 px-4 text-sm focus:ring-2 focus:ring-emerald-500/20" />
+            </div>
+          </div>
+
+          <div class="p-2 md:p-6 overflow-x-auto">
+            <DoctorCard 
+              :doctors="doctors" 
+              @removeDoctor="removeDoctor" 
+              @editDoctor="editDoctor" 
+            />
+          </div>
+        </div>
       </section>
+
     </div>
   </div>
 </template>
 
 <style scoped>
+
+@media (max-width: 1024px) {
+  .lg\:col-span-4 {
+    grid-column: span 12 / span 12;
+  }
+  .lg\:col-span-8 {
+    grid-column: span 12 / span 12;
+  }
+}
+</style>
+
+<!-- <style scoped>
 .page-layout {
   padding: 2rem;
   max-width: 1400px;
@@ -165,4 +215,4 @@ function saveEditDoctor(doctor){
     flex: none;
   }
 }
-</style>
+</style> -->
