@@ -59,3 +59,7 @@ export const rooms = ref([
     { numero: "020", capacite: 5, statut: "available", affectationPatient: 0 }
 ])
 localStorage.setItem('rooms', JSON.stringify(rooms.value))
+
+
+
+

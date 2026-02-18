@@ -79,6 +79,4 @@ h2 {
   background-color: #bbdefb;
   border-color: #2196f3;
 }
-
-
 </style>
