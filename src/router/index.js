@@ -18,6 +18,7 @@ import DoctorPatient from '@/components/DoctorPatient.vue'
 import FormComs from '@/views/FormComs.vue'
 import Détails from '@/components/Détails.vue'
 import Affectation from '@/components/Affectation.vue'
+import UseForm from '@/components/UseForm.vue'
 
 
 const routes = [
@@ -99,6 +100,11 @@ const routes = [
     path: '/users',
     name: 'users',
     component: Users
+  },
+  {
+    path: '/usersform',
+    name: 'usersform',
+    component: UseForm
   },
   {
     path: '/header',
