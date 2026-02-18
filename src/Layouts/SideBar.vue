@@ -1,12 +1,21 @@
 <script setup>
-// Pas de logique spécifique
+
+// import { computed } from 'vue';
+// import { currentId } from '@/services/auth';
+// import { users } from '@/services/data';
+
+// const currentUser = computed(() => {
+//   return users.value.find(u => u.id === currentId.value.id) || null;
+// })
+// console.log(currentUser.value);
+
 </script>
 
 <template>
   <aside class="sidebar">
     <div class="sidebar-section">
       <small class="section-title">Menu Principal</small>
-      <RouterLink to='/admindash' class="nav-item">
+      <RouterLink to='/admindash' class="nav-item" >
         <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
         <span>Dashboard</span>
       </RouterLink>
@@ -42,6 +51,7 @@
 </template>
 
 <style scoped>
+
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -111,4 +121,5 @@
   .section-title, .sidebar-footer, .nav-item span { display: none; }
   .nav-item { justify-content: center; width: 50px; height: 50px; padding: 0; }
 }
+
 </style>

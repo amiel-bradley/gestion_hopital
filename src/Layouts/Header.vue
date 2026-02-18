@@ -8,6 +8,8 @@ const router = useRouter()
 const currentUser = computed(() => {
   return users.value.find(u => u.id === currentId.value.id) || null;
 })
+// console.log(currentUser.value);
+
 
 function logoutt() {
     logout()

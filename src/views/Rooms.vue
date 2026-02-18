@@ -14,9 +14,9 @@ import { rooms } from '@/services/data';
           <span class="dot green"></span>
           <strong>{{rooms.filter(r => r.statut === 'Disponible').length}}</strong> Libres
         </div>
-      </div>
-      <div class="card-footer">
-        <RouterLink class="btn-manage" to="/rooms/affectation">Gérer l'affectation</RouterLink>
+        <div class="card-footer">
+          <RouterLink class="btn-manage" to="/rooms/affectation">Gérer l'affectation</RouterLink>
+        </div>
       </div>
     </header>
 
