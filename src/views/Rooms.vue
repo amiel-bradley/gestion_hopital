@@ -1,5 +1,29 @@
 <script setup>
-import { rooms } from '@/services/data';
+import { ref, computed, watch, onMounted } from 'vue'
+import { rooms, roomsdispo, patients } from '@/services/data'
+import { useRouter, RouterLink } from 'vue-router'
+
+const router = useRouter()
+
+// On recharge les données depuis localStorage si existant
+onMounted(() => {
+  const savedRooms = localStorage.getItem('rooms')
+  if (savedRooms) rooms.value = JSON.parse(savedRooms)
+})
+
+// Watch pour synchroniser automatiquement le localStorage
+watch(
+  rooms,
+  (newVal) => {
+    localStorage.setItem('rooms', JSON.stringify(newVal))
+  },
+  { deep: true }
+)
+
+// Statistique : nombre de chambres libres
+const libreCount = computed(() =>
+  rooms.value.filter(r => r.statut === 'available').length
+)
 </script>
 
 <template>
@@ -9,10 +33,11 @@ import { rooms } from '@/services/data';
         <h2>Gestion des Chambres</h2>
         <p>Disponibilité des lits et affectations en temps réel</p>
       </div>
+
       <div class="stats-mini">
         <div class="stat-item">
           <span class="dot green"></span>
-          <strong>{{rooms.filter(r => r.statut === 'Disponible').length}}</strong> Libres
+          <strong>{{ libreCount }}</strong> Libres
         </div>
         <div class="card-footer">
           <RouterLink class="btn-manage" to="/rooms/affectation">Gérer l'affectation</RouterLink>
@@ -21,11 +46,11 @@ import { rooms } from '@/services/data';
     </header>
 
     <div class="rooms-grid">
-      <div v-for="room in rooms" :key="room.numero" class="room-card" :class="room.statut.toLowerCase()">
+      <div v-for="room in rooms" :key="room.roomId" class="room-card" :class="room.statut">
         <div class="card-header">
           <span class="room-number">Chambre {{ room.numero }}</span>
-          <span :class="['status-badge', room.statut.toLowerCase()]">
-            {{ room.statut }}
+          <span :class="['status-badge', room.statut]">
+            {{ room.statut === 'available' ? 'Disponible' : 'Occupée' }}
           </span>
         </div>
 
@@ -36,7 +61,11 @@ import { rooms } from '@/services/data';
           </div>
           <div class="info">
             <span class="label">Patients :</span>
-            <span class="value">{{ room.affectationPatient || 'Aucun' }}</span>
+            <span class="value">
+              {{ room.affectationPatient }} patient{{ room.affectationPatient > 1 ? 's' : '' }}
+            </span>
+
+
           </div>
         </div>
       </div>
@@ -94,7 +123,6 @@ import { rooms } from '@/services/data';
   gap: 1.5rem;
 }
 
-/* Carte Chambre */
 .room-card {
   background: white;
   border: 1px solid #e2e8f0;
@@ -102,20 +130,15 @@ import { rooms } from '@/services/data';
   padding: 1.2rem;
   transition: all 0.3s ease;
   border-left: 5px solid #cbd5e1;
-  /* Par défaut gris */
 }
 
 /* Changement de couleur selon le statut */
-.room-card.disponible {
+.room-card.available {
   border-left-color: #10b981;
 }
 
-.room-card.occupée {
+.room-card.occupied {
   border-left-color: #3b82f6;
-}
-
-.room-card.maintenance {
-  border-left-color: #f59e0b;
 }
 
 .card-header {
@@ -131,7 +154,6 @@ import { rooms } from '@/services/data';
   font-size: 1.1rem;
 }
 
-/* Badges de statut */
 .status-badge {
   padding: 4px 10px;
   border-radius: 6px;
@@ -140,19 +162,14 @@ import { rooms } from '@/services/data';
   text-transform: uppercase;
 }
 
-.status-badge.disponible {
+.status-badge.available {
   background: #dcfce7;
   color: #166534;
 }
 
-.status-badge.occupée {
+.status-badge.occupied {
   background: #dbeafe;
   color: #1e40af;
-}
-
-.status-badge.maintenance {
-  background: #fef3c7;
-  color: #92400e;
 }
 
 .card-body {
