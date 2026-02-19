@@ -19,6 +19,7 @@ import FormComs from '@/views/FormComs.vue'
 import Détails from '@/components/Détails.vue'
 import Affectation from '@/components/Affectation.vue'
 import UseForm from '@/components/UseForm.vue'
+import RoomData from '@/components/RoomData.vue'
 
 
 const routes = [
@@ -97,6 +98,11 @@ const routes = [
     component: Affectation
   },
   {
+    path: '/rooms/roomdata',
+    name: 'roomdata',
+    component: RoomData
+  },
+  {
     path: '/users',
     name: 'users',
     component: Users
@@ -148,6 +154,6 @@ router.beforeEach((to, from, next) => {
     if (user?.role === 'doctor') return next({ name: 'doctordash' });
     if (user?.role === 'recept') return next({ name: 'receptdash' });
   }
-  next();
+  next()
 });
 export default router
