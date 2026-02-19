@@ -5,11 +5,18 @@ import { doctors } from '@/services/data';
 import { ref } from 'vue';
 
 const selectDoctor = ref(null)
+const open = ref(false)
+
+const closeForm = () => {
+  open.value = false;
+  selectDoctor.value = null;
+};
 
 // --- CRUD LOGIC ---
 
 function addDoctors(doctor){
     doctors.value.push(doctor)
+    open.value = false
 }
 
 function removeDoctor(doctor){
@@ -46,19 +53,40 @@ function saveEditDoctor(doctor){
       </div>
     </header>
 
+    <button @click="open = true">Ajouter un Médécin</button>
+
     <div class="main-content">
-      <aside class="form-sidebar">
-        <div class="sticky-container">
+<Teleport to="body">
+
+    <div v-if="open || selectDoctor" class="modal-overlay" @click.self="closeForm">
+      
+      <div class="modal-container glow-effect">
+        
+        <button class="floating-close" @click="closeForm">
+          <span>✕</span>
+        </button>
+
+        <header class="modal-header">
+          <h3>{{ selectDoctor ? 'Modifier le Praticien' : 'Nouveau Praticien' }}</h3>
+        </header>
+        
+        <div class="modal-body">
           <DoctorForm 
             @addDoctors="addDoctors" 
             :doctor="selectDoctor" 
             @editDoctor="saveEditDoctor" 
           />
-          <button v-if="selectDoctor" class="btn-cancel-edit" @click="selectDoctor = null">
+        </div>
+
+        <footer v-if="selectDoctor" class="modal-footer">
+          <button class="btn-cancel-edit" @click="selectDoctor = null">
             Annuler la modification
           </button>
-        </div>
-      </aside>
+        </footer>
+      </div>
+    </div>
+
+</Teleport>
 
       <section class="list-section">
         <DoctorCard 
@@ -72,6 +100,126 @@ function saveEditDoctor(doctor){
 </template>
 
 <style scoped>
+button {
+  width: 100%;
+  padding: 1rem;
+  background: #0d9488;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+/* --- Overlay (Arrière-plan flouté) --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+/* --- Le Modal avec son Halo --- */
+.modal-container {
+  background: white;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 28px;
+  position: relative;
+  /* Halo turquoise diffus + ombre portée classique */
+  box-shadow: 0 0 50px -10px rgba(13, 148, 136, 0.5), 
+              0 25px 50px -12px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Bouton X Flottant Animé --- */
+.floating-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 44px;
+  height: 44px;
+  background: #1e293b;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  z-index: 100;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-close:hover {
+  background: #f30e06; /* Change en rouge au survol */
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* --- Design interne --- */
+.modal-header {
+  padding: 24px 32px;
+  border-bottom: 1px solid #f1f5f9;
+  background: linear-gradient(to right, #ffffff, #f9fafb);
+  border-radius: 28px 28px 0 0;
+}
+
+.modal-header h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.modal-body {
+  padding: 32px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* --- Animations d'entrée (Transitions) --- */
+.modal-fade-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.modal-fade-enter-from {
+  opacity: 0;
+}
+
+/* Effet de "pop" du modal */
+.modal-fade-enter-active .modal-container {
+  animation: modal-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Effet de "pop" du bouton X avec un léger retard */
+.modal-fade-enter-active .floating-close {
+  animation: btn-pop 0.5s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes modal-pop {
+  from { opacity: 0; transform: scale(0.9) translateY(30px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes btn-pop {
+  from { opacity: 0; transform: scale(0); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Scrollbar discrète */
+.modal-body::-webkit-scrollbar { width: 5px; }
+.modal-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
 .page-layout {
   padding: 2rem;
   max-width: 1400px;
