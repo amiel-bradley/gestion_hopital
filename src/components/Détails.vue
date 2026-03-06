@@ -1,7 +1,7 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { computed } from "vue";
-import { patients } from "@/services/data";
+import { doctors, patients } from "@/services/data";
 
 const route = useRoute();
 const router = useRouter();
@@ -130,13 +130,13 @@ const editPatient = () => {
                 </svg></div>
               <div class="track-content">
                 <label>Médecin Responsable</label>
-                <span>Dr. {{ patient.doctorId || "En attente d'assignation" }}</span>
+                <span>Dr. {{ doctors.find(d=> d.id = patient.doctorId).name || "En attente d'assignation" }}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="card-section vitals-preview">
+        <!-- <div class="card-section vitals-preview">
           <div class="section-title">Aperçu Constantes</div>
           <div class="vitals-placeholder">
             <svg viewBox="0 0 100 30" class="ecg-wave">
@@ -145,7 +145,7 @@ const editPatient = () => {
             </svg>
             <p>Monitoring patient actif</p>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>

@@ -2,6 +2,12 @@
 import { computed, ref, onMounted } from "vue";
 import { patients } from "@/services/data";
 import { useRouter } from "vue-router";
+import { currentId } from '@/services/auth';
+import { users } from '@/services/data';
+
+const currentUser = computed(() => {
+  return users.value.find(u => u.id === currentId.value.id) || null;
+})
 
 const router = useRouter();
 
@@ -76,6 +82,7 @@ const modifier = (patient) => {
 const supp = (id) => {
   openDeleteModal(id);
 };
+
 </script>
 
 
@@ -120,7 +127,7 @@ const supp = (id) => {
           <p class="subtitle">{{ filteredPatients.length }} dossiers médicaux actifs</p>
         </div>
       </div>
-      <button class="btn-add-main" @click="ajouterPatient">
+      <button class="btn-add-main" @click="ajouterPatient" v-if="currentUser.role === 'admin'|| currentUser.role === 'recept'">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
           <path d="M12 5v14M5 12h14" />
         </svg>

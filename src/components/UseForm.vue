@@ -6,7 +6,6 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 // FORM STATE
-let id = 3;
 const nom = ref("");
 const prenom = ref("");
 const age = ref("");
@@ -26,7 +25,7 @@ function addUsers() {
   if (!nom.value || !prenom.value || !email.value) return;
 
   users.value.push({
-    id: id++,
+    id: Date.now(),
     username: prenom.value,
     firstname: nom.value,
     role: role.value,
@@ -131,7 +130,7 @@ const goBack = () => router.push('/users');
 
           <div class="input-box mt">
             <label>Téléphone</label>
-            <input v-model="number" type="tel" placeholder="+229 -- -- -- --">
+            <input v-model="number" type="number" placeholder="+229 -- -- -- --">
           </div>
           <div class="input-box mt">
             <label>Mot de passe</label>

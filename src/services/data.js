@@ -7,6 +7,7 @@ export const users = ref( storedUsers ||[
     { id: 2, username: 'Rogalex', age: 35, telephone: "0154458522", email: "zannourogalex@gmail.com", firstname: 'ZANNOU', role: 'doctor', password: '1234' },
     { id: 3, username: 'Marcel', age: 25, telephone: "0152488522", email: "yessia@gmail.com", firstname: 'YESSIA', role: 'recept', password: '1234' },
 ])
+localStorage.setItem('users', JSON.stringify(users.value))
 watch(
     users,
     (newValue) => {
@@ -16,10 +17,11 @@ watch(
 )
 
 // --------- Données Médecins ----------------------------------
-const storedDoctors = JSON.parse(localStorage.getItem('doctors'))
-export const doctors = ref(storedDoctors || [
+// const storedDoctors = JSON.parse(localStorage.getItem('doctors'))
+export const doctors = ref([
     { id: Date.now(), name: 'Rogalex', speciality: 'chirugie', phone: '0166010292', available: true }
 ])
+localStorage.setItem('doctors', JSON.stringify(doctors.value))
 watch(
     doctors,
     (newValue) => {
@@ -34,7 +36,33 @@ export const patients = ref(storedPatients || [
     {
         id: Date.now(),
         firstName: "SOUDE",
-        lastName: "Armel",
+        lastName: "Armel0",
+        gender: "male",
+        phone: "0158010353",
+        bloodGroup: "O+",
+        status: "hospitalized",
+        rdv: false,
+        doctorId: 3,
+        roomId: 12,
+        createdAt: new Date()
+    },
+    {
+        id: Date.now(),
+        firstName: "SOUDE",
+        lastName: "Armel2",
+        gender: "male",
+        phone: "0158010353",
+        bloodGroup: "O+",
+        status: "hospitalized",
+        rdv: false,
+        doctorId: 3,
+        roomId: 12,
+        createdAt: new Date()
+    },
+    {
+        id: Date.now(),
+        firstName: "SOUDE",
+        lastName: "Armel1",
         gender: "male",
         phone: "0158010353",
         bloodGroup: "O+",

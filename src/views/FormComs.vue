@@ -137,7 +137,7 @@ const savePatient = () => {
         <div class="row">
           <div class="field">
             <label>Téléphone</label>
-            <input v-model="form.phone" type="tel" placeholder="01 23 45 67 89" required/>
+            <input v-model="form.phone" type="number" placeholder="01 23 45 67 89" required/>
           </div>
           <div class="field">
             <label>Email</label>

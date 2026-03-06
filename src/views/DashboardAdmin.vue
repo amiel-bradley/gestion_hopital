@@ -31,7 +31,7 @@ import { patients, doctors, rooms } from '@/services/data';
       <div class="stat-card">
         <div class="stat-icon appointment">📅</div>
         <div class="stat-details">
-          <h3>18</h3>
+          <h3>02</h3>
           <p>Rendez-vous aujourd'hui</p>
         </div>
       </div>

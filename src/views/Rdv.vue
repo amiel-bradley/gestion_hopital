@@ -1,6 +1,12 @@
 <script setup>
 import { rooms } from '@/services/data';
 import { ref, computed } from 'vue';
+import { currentId } from '@/services/auth';
+import { users } from '@/services/data';
+
+const currentUser = computed(() => {
+  return users.value.find(u => u.id === currentId.value.id) || null;
+})
 
 const rdv = ref(JSON.parse(localStorage.getItem('rdv')) || []);
 const patients = ref(JSON.parse(localStorage.getItem('patients')) || []);
@@ -178,7 +184,7 @@ function formatDate(dateStr) {
         <main class="h-container">
             <div class="h-grid">
                 <aside class="h-sidebar">
-                    <div class="h-card">
+                    <div class="h-card" v-if="currentUser.role === 'admin'|| currentUser.role === 'recept'">
                         <div class="h-card-head">
                             <svg :class="{ 'edit-icon': form.id }" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2.5">
